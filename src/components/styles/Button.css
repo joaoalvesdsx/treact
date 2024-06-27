@@ -1,0 +1,20 @@
+.custom-button {
+    background-color: rgba(1, 40, 66, 1);
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 55px;
+    width: 70%;
+    margin-left: 48px;
+    margin-bottom: 45px;
+    font-weight: bold;
+  }
+  
+  .custom-button:hover {
+    background-color: rgb(18, 1, 66);
+  }
+  

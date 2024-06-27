@@ -1,0 +1,81 @@
+.registrar-proposta {
+    padding: 20px;
+  }
+  
+  h2 {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .resultados {
+    margin-top: 20px;
+  }
+  .input-forms{
+    width: 80%;
+  }
+
+  .button-form{
+    width: 20%;
+    font-family: 'Montserrat';
+    margin-left: 40%;
+    margin-top: 2%;
+  }
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    width: 100%;
+  }
+  
+  .error {
+    color: red;
+    font-size: 12px;
+  }
+  
+  .filtro-status {
+    font-family: 'Montserrat';
+    border: none;
+    display: flex;
+    align-items: center;
+    width: 20%;
+  }
+  
+  .filtro {
+    font-family: 'Montserrat';
+    background-color: rgba(163, 163, 163, 0.34);
+    width: 120px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    margin-left: 15px;
+  }
+
+  .filtros{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .button-filtro{
+    margin: 0;
+    width: 200px;
+  }
+
+  .filtro-data{
+    display: flex;
+    justify-content: space-evenly;
+    width: 40%;
+    align-items: center;
+  }
+
+  .H4{
+    text-align: center;
+  }

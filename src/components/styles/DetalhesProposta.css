@@ -1,0 +1,25 @@
+.detalhes-proposta {
+    padding: 20px;
+  }
+  
+  .proposta-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .info-group {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .create-follow-up {
+    margin-top: 20px;
+  }
+  
+  .follow-up {
+    margin-top: 10px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+  }
+  

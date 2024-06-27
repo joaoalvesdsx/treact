@@ -1,0 +1,317 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Header from '../commons/Header';
+import Input from '../commons/Input';
+import Button from '../commons/Button';
+import Table from '../commons/Table';
+import '../styles/RegistrarProposta.css';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+
+const RegistrarProposta = () => {
+  const [chave, setChave] = useState(1);
+  const [referencia, setReferencia] = useState('');
+  const [data, setData] = useState('');
+  const [observacao, setObservacao] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [cnpj_empresa, setCnpjEmpresa] = useState('');
+  const [propostas, setPropostas] = useState([]);
+  const [empresas, setEmpresas] = useState({});
+  const [filtroStatus, setFiltroStatus] = useState('Todos');
+  const [filtroDataInicio, setFiltroDataInicio] = useState('');
+  const [filtroDataFim, setFiltroDataFim] = useState('');
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+  const { auth } = useAuth();
+  useEffect(() => {
+    const fetchPropostas = async () => {
+      try {
+        const responsePropostas = await axios.get('http://localhost:5000/listar_todas_propostas', {
+          headers: {
+            Authorization: `Bearer ${auth.token}`
+          }
+        });
+        const propostas = responsePropostas.data;
+        propostas.reverse();
+        const empresaCNPJs = [...new Set(propostas.map(proposta => proposta.cnpj_empresa))];
+        
+        const empresaResponses = await Promise.all(
+          empresaCNPJs.map(cnpj_empresa => axios.get(`http://localhost:5000/listar_empresa_por_cnpj?cnpj=${cnpj_empresa}`, {
+            headers: {
+              Authorization: `Bearer ${auth.token}`
+            }
+          }))
+        );
+        
+        const empresaData = empresaResponses.reduce((acc, res) => {
+          acc[res.data.cnpj] = res.data.nome_empresa;
+          return acc;
+        }, {});
+        
+        setEmpresas(empresaData);
+        setPropostas(propostas);
+        // Se houverem propostas, determine a chave correta.
+        if (propostas.length > 0) {
+          const lastChave = propostas[0].chave;
+          setChave(lastChave + 1);
+        } else {
+          setChave(1);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar propostas:', error);
+      }
+    };
+
+    fetchPropostas();
+  }, [auth.token]);
+
+  const validate = () => {
+    const newErrors = {};
+    if (!referencia) newErrors.referencia = 'Referência é obrigatória';
+    if (!data) newErrors.data = 'Data é obrigatória';
+    if (!descricao) newErrors.descricao = 'Descrição é obrigatória';
+    if (!cnpj_empresa) newErrors.cnpj_empresa = 'CNPJ da empresa é obrigatório';
+    return newErrors;
+  };
+
+  const handleRegistrarProposta = async () => {
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    const novaProposta = {
+      chave,
+      referencia,
+      data,
+      observacao,
+      descricao,
+      status: 'Aberta',
+      cnpj_empresa: cnpj_empresa
+    };
+
+    try {
+      await axios.post('http://localhost:5000/registrar_proposta', novaProposta, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
+      const responsePropostas = await axios.get('http://localhost:5000/listar_todas_propostas', {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
+      const propostas = responsePropostas.data;
+      propostas.reverse();
+      const empresaCNPJs = [...new Set(propostas.map(proposta => proposta.cnpj_empresa))];
+      
+      const empresaResponses = await Promise.all(
+        empresaCNPJs.map(cnpj => axios.get(`http://localhost:5000/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
+          headers: {
+            Authorization: `Bearer ${auth.token}`
+          }
+        }))
+      );
+      
+      const empresaData = empresaResponses.reduce((acc, res) => {
+        acc[res.data.cnpj] = res.data.nome_empresa;
+        return acc;
+      }, {});
+      
+      setEmpresas(empresaData);
+      setPropostas(propostas);
+      setReferencia('');
+      setData('');
+      setObservacao('');
+      setDescricao('');
+      setCnpjEmpresa('');
+      setErrors({});
+      // Atualize a chave para a próxima proposta
+      if (propostas.length > 0) {
+        const lastChave = propostas[0].chave;
+        setChave(lastChave + 1);
+      } else {
+        setChave(1);
+      }
+    } catch (error) {
+      console.error('Erro ao registrar proposta:', error);
+    }
+  };
+
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      await axios.post('http://localhost:5000/atualizar_status_proposta', { id, status: newStatus }, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
+      const responsePropostas = await axios.get('http://localhost:5000/listar_todas_propostas', {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
+      const propostas = responsePropostas.data;
+      propostas.reverse();
+      const empresaCNPJs = [...new Set(propostas.map(proposta => proposta.cnpj_empresa))];
+      
+      const empresaResponses = await Promise.all(
+        empresaCNPJs.map(cnpj => axios.get(`http://localhost:5000/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
+          headers: {
+            Authorization: `Bearer ${auth.token}`
+          }
+        }))
+      );
+      
+      const empresaData = empresaResponses.reduce((acc, res) => {
+        acc[res.data.cnpj] = res.data.nome_empresa;
+        return acc;
+      }, {});
+      
+      setEmpresas(empresaData);
+      setPropostas(propostas);
+    } catch (error) {
+      console.error('Erro ao atualizar status:', error);
+    }
+  };
+
+  const handleClearFilters = () => {
+    setFiltroStatus('Todos');
+    setFiltroDataInicio('');
+    setFiltroDataFim('');
+  };
+
+  const handleRowClick = (row) => {
+    navigate(`/followup/${row.chave}`);
+  };
+
+  const filteredPropostas = propostas.filter(proposta => {
+    const isStatusMatch = filtroStatus === 'Todos' || proposta.status === filtroStatus;
+    const isDataMatch = (!filtroDataInicio || new Date(proposta.data) >= new Date(filtroDataInicio)) &&
+                        (!filtroDataFim || new Date(proposta.data) <= new Date(filtroDataFim));
+    return isStatusMatch && isDataMatch;
+  });
+
+  const columns = [
+    { header: 'Número', accessor: 'chave' },
+    { header: 'Data', accessor: 'data' },
+    { header: 'Cliente', accessor: 'cnpj_empresa', Cell: ({ value }) => empresas[value] || value },
+    { header: 'Descrição', accessor: 'descricao' },
+    { header: 'Observação', accessor: 'observacao' },
+    { header: 'Status', accessor: 'status', Cell: ({ row }) => (
+        <select
+          value={row.original.status || ''}
+          onChange={(e) => handleStatusChange(row.original._id, e.target.value)}
+        >
+          <option value="Aberto">Aberto</option>
+          <option value="Fechado">Fechado</option>
+          <option value="Pendente">Pendente</option>
+        </select>
+      )
+    },
+  ];
+
+  return (
+    <>
+      <Header text="Propostas" showBackButton={true} />
+      <div className="registrar-proposta">
+        <h2>Propostas</h2>
+        <div className="form-row">
+          <Input 
+            classname="input-forms"
+            type="text"
+            placeholder="Número"
+            value={chave}
+            readOnly
+          />
+          <Input 
+            classname="input-forms"
+            type="text"
+            placeholder="Referência"
+            value={referencia}
+            onChange={(e) => setReferencia(e.target.value)}
+          />
+          {errors.referencia && <span className="error">{errors.referencia}</span>}
+          <Input 
+            classname="input-forms"
+            type="date"
+            placeholder="Data"
+            value={data}
+            onChange={(e) => setData(e.target.value)}
+          />
+          {errors.data && <span className="error">{errors.data}</span>}
+        </div>
+        <div className="form-row">
+          <Input 
+            classname="input-forms"
+            type="text"
+            placeholder="CNPJ Empresa"
+            value={cnpj_empresa}
+            onChange={(e) => setCnpjEmpresa(e.target.value)}
+          />
+          {errors.cnpj_empresa && <span className="error">{errors.cnpj_empresa}</span>}
+          <Input 
+            classname="input-forms"
+            type="text"
+            placeholder="Observação"
+            value={observacao}
+            onChange={(e) => setObservacao(e.target.value)}
+          />
+          <Input 
+            classname="input-forms"
+            type="text"
+            placeholder="Descrição - Produto, serviço"
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
+          />
+          {errors.descricao && <span className="error">{errors.descricao}</span>}
+        </div>
+        <div className="form-row">
+          <Button className='button-form' onClick={handleRegistrarProposta}>Registrar</Button>
+        </div>
+        
+        <h4 className='H4'>Filtros : </h4>
+        <div className="resultados">
+          <div className='filtros'> 
+            <div className="filtro-status">
+            Status : 
+            <select className='filtro'
+              value={filtroStatus}
+              onChange={(e) => setFiltroStatus(e.target.value)}
+            >
+              <option className='filtro' value="Todos">Todos</option>
+              <option className='filtro' value="Aberto">Aberto</option>
+              <option className='filtro' value="Fechado">Fechado</option>
+              <option className='filtro' value="Pendente">Pendente</option>
+            </select>
+          </div>
+          <div className="filtro-data">
+            Data Inicial :
+            <Input 
+              classname="input-forms"
+              type="date"
+              placeholder="Data Início"
+              value={filtroDataInicio}
+              onChange={(e) => setFiltroDataInicio(e.target.value)}
+            />
+            Data Final :
+            <Input 
+              classname="input-forms"
+              type="date"
+              placeholder="Data Fim"
+              value={filtroDataFim}
+              onChange={(e) => setFiltroDataFim(e.target.value)}
+            />
+          </div>
+          <Button className='button-filtro' onClick={handleClearFilters}>Limpar Filtros</Button>
+          </div>
+          {filteredPropostas.length > 0 && (
+            <Table columns={columns} data={filteredPropostas} onRowClick={handleRowClick} />
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default RegistrarProposta;

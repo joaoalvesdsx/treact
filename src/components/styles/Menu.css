@@ -1,0 +1,60 @@
+.display-container{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: max-content;
+    padding-top: 50px;
+
+}
+
+.ul-menu{
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    background-color:rgba(1, 40, 66, 1);
+    width: 250px;
+    height: 340px;
+    border-radius: 15px;
+    padding: 0;
+    margin:0;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 50px;
+    
+}
+
+li{
+    display: flex;
+    color: #FFFFFF;
+    width: 250px;
+    height: 250px;
+    border: 0.5px solid #FFFFFF;
+    align-items: center;
+    justify-content: center;
+    transition: 0.01s;
+
+}
+
+.ul-menu li:hover {
+    cursor: pointer;
+    background-color: black;
+    transform: scale(1.01);
+    
+  }
+.ul-menu li:hover:nth-child(1){
+   border-radius: 15px 15px 0 0;
+}
+.ul-menu li:hover:nth-child(6){
+  border-radius: 0 0 15px 15px;
+}
+
+.image {
+    height: 400px;
+    width: 400px;
+  }
+  
+  .image .woman-with-backpack {
+    height: 400px;
+    width: 400px;
+  }
+  

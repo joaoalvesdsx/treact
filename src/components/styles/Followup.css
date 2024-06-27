@@ -1,0 +1,96 @@
+.follow-up{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.proposta-info {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    border-radius: 15px;
+    background-color: rgba(163, 163, 163, 0.34);
+    margin: 10px;
+    padding: 10px;
+}
+.box2{
+    padding-right: 150px;
+}
+.box1{
+    padding-left: 30px;
+}
+
+
+
+.imagem-section{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 50vh;
+    margin: 20px;
+}
+
+.button-add{
+    width: 5%;
+    height: 37px;
+    align-items: center;
+    margin: 0;
+    margin-left: 15px;
+    padding: 0;
+}
+
+.imagem{
+    width: 250px;
+    height: 250px;
+}
+.input-image{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+.input-add{
+    width: 25%;
+}
+
+img {
+    border-radius: 15px;
+}
+
+.image-box{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%
+}
+
+.revisao-section{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin: 20px;
+    flex-direction: column;
+}
+
+.tratativa-section{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin: 20px;
+    flex-direction: column;
+
+}
+
+.input-add-tratativa{
+    width: 70%;
+}
+
+h2{
+    margin-left: 10px;
+}
+
+#file-upload-button{
+    border-radius: 5px;
+}

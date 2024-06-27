@@ -1,0 +1,74 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat-Light", Helvetica;
+}
+
+.login{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 669px;
+
+}
+.div{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color:  rgb(255, 255, 255);
+  border-radius: 20px;
+  box-shadow:  2px 2px 1px rgba(0, 0, 0, 0.2)
+  
+  
+}
+.painel{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 80%;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+.flexcontainer{
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+.login-image {
+  max-width: 40%;
+  height: auto;
+  margin-bottom: 20px;
+  margin-right: 15%;
+}
+
+.span{
+  font-size: 25px;
+  font-weight: bolder;  
+}
+
+.text-1{
+  padding-top: 35px;
+}
+
+.overlap{
+  margin-top: 50px;
+}
+
+.text-wrapper-3{
+  padding-bottom: 5px;
+  
+}
+.userbox-1{
+  padding-top: 15px;
+  padding-bottom: 60px;
+}
+
+.userbox{
+  padding-top: 20px;
+}
+.input{
+  width: 100%;
+}

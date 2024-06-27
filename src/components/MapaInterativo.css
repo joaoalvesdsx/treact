@@ -1,0 +1,36 @@
+/* MapComponent.css */
+.map-container {
+    width: 50%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .map-container svg {
+    width: 500px;
+    height: 400px;
+  }
+  
+  .map-container path {
+    cursor: pointer;
+    transition: 1s ease;
+  }
+
+  .map-container path:hover {
+    stroke-width: 6;
+    fill: rgb(0, 102, 255);
+  }
+  
+  .tooltip {
+    position: absolute;
+    background-color: rgba(1, 40, 66, 1);
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    top: 350px;
+    left: 900px;
+    z-index: 10;
+    pointer-events: none;
+    color: #FFF;
+  }
