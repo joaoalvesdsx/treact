@@ -4,7 +4,7 @@ import Input from '../commons/Input';
 import Button from '../commons/Button';
 import '../styles/CadastrarEmpresa.css'; // Importa o CSS para estilização
 import { useAuth } from '../../context/AuthContext';
-import api from '../api';
+import api from '../../api';
 
 const CadastrarEmpresa = () => {
   const [empresa, setEmpresa] = useState({
