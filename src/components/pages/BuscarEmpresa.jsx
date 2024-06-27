@@ -8,6 +8,7 @@ import Button from '../commons/Button';
 import Table from '../commons/Table';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import api from './api';
 
 const BuscarEmpresa = () => {
   const [cnpj, setCnpj] = useState('');
@@ -18,7 +19,7 @@ const BuscarEmpresa = () => {
 
   const handleBuscarCnpj = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
+      const response = await api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
@@ -31,7 +32,7 @@ const BuscarEmpresa = () => {
 
   const handleBuscarNome = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/listar_empresas_por_nome?nome=${nome_empresa}`, {
+      const response = await api.get(`/listar_empresas_por_nome?nome=${nome_empresa}`, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
@@ -44,7 +45,7 @@ const BuscarEmpresa = () => {
 
   const handleRegionClick = async (regiao) => {
     try {
-      const response = await axios.get(`http://localhost:5000/listar_empresas_por_regiao?regiao=${regiao}`, {
+      const response = await api.get(`/listar_empresas_por_regiao?regiao=${regiao}`, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }

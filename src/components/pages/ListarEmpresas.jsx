@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from './api';
 import Table from '../commons/Table'; // Importando o componente de tabela
 import Header from '../commons/Header';
 import '../styles/ListarEmpresa.css';
@@ -16,7 +16,7 @@ function ListarEmpresas() {
   useEffect(() => {
     const fetchEmpresas = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/listar_todas_empresas',{headers: {
+        const response = await api.get('/listar_todas_empresas',{headers: {
           Authorization: `Bearer ${auth.token}`
         }});
         setEmpresas(response.data);

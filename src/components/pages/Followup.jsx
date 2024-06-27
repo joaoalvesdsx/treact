@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from './api';
 import Header from '../commons/Header';
 import Input from '../commons/Input';
 import Button from '../commons/Button';
@@ -31,7 +31,7 @@ const FollowUp = () => {
   useEffect(() => {
     const fetchPropostaData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/proposta/${chave}`,{headers: {
+        const response = await api.get(`/proposta/${chave}`,{headers: {
           Authorization: `Bearer ${auth.token}`
         }});
         setProposta(response.data);
@@ -52,7 +52,7 @@ const FollowUp = () => {
     formData.append('descricao', newImagem.descricao);
 
     try {
-      await axios.post(`http://localhost:5000/upload_imagem/${proposta.chave}`, formData,{headers: {
+      await api.post(`/upload_imagem/${proposta.chave}`, formData,{headers: {
         Authorization: `Bearer ${auth.token}`
       }}, {
         headers: {
@@ -78,7 +78,7 @@ const FollowUp = () => {
     try {
       const data = new Date().toLocaleDateString('pt-BR');
       const revisao = { ...newRevisao, data };
-      await axios.post(`http://localhost:5000/adicionar_revisao/${proposta.chave}`, revisao,{headers: {
+      await api.post(`/adicionar_revisao/${proposta.chave}`, revisao,{headers: {
         Authorization: `Bearer ${auth.token}`
       }});
       setRevisoes([...revisoes, revisao]);
@@ -91,7 +91,7 @@ const FollowUp = () => {
     try {
       const data = new Date().toLocaleDateString('pt-BR');
       const tratativa = { ...newTratativa, data };
-      await axios.post(`http://localhost:5000/adicionar_tratativa/${proposta.chave}`, tratativa,{headers: {
+      await api.post(`/adicionar_tratativa/${proposta.chave}`, tratativa,{headers: {
         Authorization: `Bearer ${auth.token}`
       }});
       setTratativas([...tratativas, tratativa]);
@@ -122,7 +122,7 @@ const FollowUp = () => {
         <div className='image-box'>
           {imagens.map(imagem => (
             <div key={imagem.path} className="imagem">            
-              <img src={`http://localhost:5000/get_imagem/${imagem.path}`} alt={imagem.descricao} width="250" height="250" />
+              <img src={`/get_imagem/${imagem.path}`} alt={imagem.descricao} width="250" height="250" />
               <p>{imagem.descricao}</p>
             </div>
           ))}

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Header from '../commons/Header';
 import Input from '../commons/Input';
 import Button from '../commons/Button';
-import axios from 'axios';
 import '../styles/CadastrarEmpresa.css'; // Importa o CSS para estilização
 import { useAuth } from '../../context/AuthContext';
+import api from './api';
 
 const CadastrarEmpresa = () => {
   const [empresa, setEmpresa] = useState({
@@ -68,10 +68,10 @@ const CadastrarEmpresa = () => {
   const handleSubmit = async () => {
     if (validate()) {
       try {
-        await axios.post('http://localhost:5000/cadastrar_empresa', empresa,{headers: {
+        await api.post('/cadastrar_empresa', empresa,{headers: {
           Authorization: `Bearer ${auth.token}`
         }});
-        await axios.post('http://localhost:5000/cadastrar_contato', {
+        await api.post('/cadastrar_contato', {
           ...contato,
           cnpj_empresa: empresa.cnpj // Relaciona o contato com a empresa
         },{headers: {

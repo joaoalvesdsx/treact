@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from './api';
 import Header from '../commons/Header';
 import Input from '../commons/Input';
 import Button from '../commons/Button';
@@ -26,7 +26,7 @@ const RegistrarProposta = () => {
   useEffect(() => {
     const fetchPropostas = async () => {
       try {
-        const responsePropostas = await axios.get('http://localhost:5000/listar_todas_propostas', {
+        const responsePropostas = await api.get('/listar_todas_propostas', {
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
@@ -36,7 +36,7 @@ const RegistrarProposta = () => {
         const empresaCNPJs = [...new Set(propostas.map(proposta => proposta.cnpj_empresa))];
         
         const empresaResponses = await Promise.all(
-          empresaCNPJs.map(cnpj_empresa => axios.get(`http://localhost:5000/listar_empresa_por_cnpj?cnpj=${cnpj_empresa}`, {
+          empresaCNPJs.map(cnpj_empresa => api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj_empresa}`, {
             headers: {
               Authorization: `Bearer ${auth.token}`
             }
@@ -92,12 +92,12 @@ const RegistrarProposta = () => {
     };
 
     try {
-      await axios.post('http://localhost:5000/registrar_proposta', novaProposta, {
+      await api.post('/registrar_proposta', novaProposta, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
       });
-      const responsePropostas = await axios.get('http://localhost:5000/listar_todas_propostas', {
+      const responsePropostas = await api.get('/listar_todas_propostas', {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
@@ -107,7 +107,7 @@ const RegistrarProposta = () => {
       const empresaCNPJs = [...new Set(propostas.map(proposta => proposta.cnpj_empresa))];
       
       const empresaResponses = await Promise.all(
-        empresaCNPJs.map(cnpj => axios.get(`http://localhost:5000/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
+        empresaCNPJs.map(cnpj => api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
@@ -141,12 +141,12 @@ const RegistrarProposta = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await axios.post('http://localhost:5000/atualizar_status_proposta', { id, status: newStatus }, {
+      await api.post('/atualizar_status_proposta', { id, status: newStatus }, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
       });
-      const responsePropostas = await axios.get('http://localhost:5000/listar_todas_propostas', {
+      const responsePropostas = await api.get('/listar_todas_propostas', {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
@@ -156,7 +156,7 @@ const RegistrarProposta = () => {
       const empresaCNPJs = [...new Set(propostas.map(proposta => proposta.cnpj_empresa))];
       
       const empresaResponses = await Promise.all(
-        empresaCNPJs.map(cnpj => axios.get(`http://localhost:5000/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
+        empresaCNPJs.map(cnpj => api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
           headers: {
             Authorization: `Bearer ${auth.token}`
           }

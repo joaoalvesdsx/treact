@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Header from '../commons/Header';
 import Input from '../commons/Input';
 import Button from '../commons/Button';
 import '../styles/DetalhesProposta.css';
 import { useAuth } from '../../context/AuthContext';
+import api from './api';
 
 const DetalhesProposta = () => {
   const { id } = useParams();
@@ -17,7 +17,7 @@ const DetalhesProposta = () => {
   useEffect(() => {
     const fetchProposta = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/buscar_proposta_por_id?id=${id}`, {
+        const response = await api.get(`/buscar_proposta_por_id?id=${id}`, {
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
@@ -30,7 +30,7 @@ const DetalhesProposta = () => {
 
     const fetchFollowUps = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/listar_followups_por_proposta?id=${id}`, {
+        const response = await api.get(`/listar_followups_por_proposta?id=${id}`, {
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
@@ -47,7 +47,7 @@ const DetalhesProposta = () => {
 
   const handleCreateFollowUp = async () => {
     try {
-      await axios.post('http://localhost:5000/criar_followup', {
+      await api.post('/criar_followup', {
         ...newFollowUp,
         propostaId: id
       }, {

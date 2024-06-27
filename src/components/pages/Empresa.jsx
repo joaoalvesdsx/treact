@@ -8,6 +8,7 @@ import Header from '../commons/Header';
 import Input from '../commons/Input';
 import '../styles/EmpresaDetails.css';
 import { useAuth } from '../../context/AuthContext';
+import api from './api';
 
 const EmpresaDetails = () => {
   const { auth } = useAuth();
@@ -38,22 +39,22 @@ const EmpresaDetails = () => {
   useEffect(() => {
     const fetchEmpresaData = async () => {
       try {
-        const empresaResponse = await axios.get(`http://localhost:5000/listar_empresa_por_cnpj?cnpj=${cnpj}`,{
+        const empresaResponse = await api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj}`,{
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
         });
-        const contatosResponse = await axios.get(`http://localhost:5000/listar_contato_por_cnpj?cnpj=${cnpj}`,{
+        const contatosResponse = await api.get(`/listar_contato_por_cnpj?cnpj=${cnpj}`,{
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
         });
-        const propostasResponse = await axios.get(`http://localhost:5000/listar_proposta_por_cnpj?cnpj=${cnpj}`,{
+        const propostasResponse = await api.get(`/listar_proposta_por_cnpj?cnpj=${cnpj}`,{
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
         });
-        const visitasResponse = await axios.get(`http://localhost:5000/listar_visitas_por_cnpj?cnpj=${cnpj}`,{
+        const visitasResponse = await api.get(`/listar_visitas_por_cnpj?cnpj=${cnpj}`,{
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
@@ -78,7 +79,7 @@ const EmpresaDetails = () => {
   const handleStatusToggle = () => {
     const novoStatus = status === 'Ativo' ? 'Inativo' : 'Ativo';
     setStatus(novoStatus);
-    axios.post(`http://localhost:5000/atualizar_status_empresa`, { cnpj, status: novoStatus },{
+    api.post(`/atualizar_status_empresa`, { cnpj, status: novoStatus },{
       headers: {
         Authorization: `Bearer ${auth.token}`
       }
@@ -89,7 +90,7 @@ const EmpresaDetails = () => {
   const handleUltimaVisitaChange = (e) => setUltimaVisita(e.target.value);
 
   const handleUltimaVendaBlur = () => {
-    axios.post(`http://localhost:5000/atualizar_ultima_venda`, { cnpj, ultimaVenda },{
+    api.post(`/atualizar_ultima_venda`, { cnpj, ultimaVenda },{
       headers: {
         Authorization: `Bearer ${auth.token}`
       }
@@ -97,7 +98,7 @@ const EmpresaDetails = () => {
   };
 
   const handleUltimaVisitaBlur = () => {
-    axios.post(`http://localhost:5000/atualizar_ultima_visita`, { cnpj, ultimaVisita },{
+    api.post(`/atualizar_ultima_visita`, { cnpj, ultimaVisita },{
       headers: {
         Authorization: `Bearer ${auth.token}`
       }
@@ -111,7 +112,7 @@ const EmpresaDetails = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/cadastrar_contato', { ...newContact, cnpj_empresa: cnpj },{
+      const response = await api.post('/cadastrar_contato', { ...newContact, cnpj_empresa: cnpj },{
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
@@ -127,7 +128,7 @@ const EmpresaDetails = () => {
   const handleDeleteContact = async (nome, celular) => {
     if (window.confirm('Você realmente quer excluir este contato?')) {
       try {
-        await axios.delete(`http://localhost:5000/deletar_contato`, { data: { nome, celular } },{
+        await api.delete(`/deletar_contato`, { data: { nome, celular } },{
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
@@ -149,7 +150,7 @@ const EmpresaDetails = () => {
     const novaVisita = { ...newVisita, data, cnpj_empresa: cnpj };
 
     try {
-      const response = await axios.post('http://localhost:5000/cadastrar_visita', novaVisita,{
+      const response = await api.post('/cadastrar_visita', novaVisita,{
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
