@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import api from './api';
+import api from '../../api';
 import Header from '../commons/Header';
 import Input from '../commons/Input';
 import Button from '../commons/Button';

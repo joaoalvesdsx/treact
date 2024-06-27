@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import api from './api';
+import api from '../../api';
 import Table from '../commons/Table'; // Importando o componente de tabela
 import Header from '../commons/Header';
 import '../styles/ListarEmpresa.css';

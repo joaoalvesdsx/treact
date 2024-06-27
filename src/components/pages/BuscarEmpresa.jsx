@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import MapaInterativo from '../MapaInterativo';
 import Header from '../commons/Header';
 import '../styles/BuscarEmpresa.css'; // Importa o CSS aqui
@@ -8,7 +7,7 @@ import Button from '../commons/Button';
 import Table from '../commons/Table';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from './api';
+import api from '../../api';
 
 const BuscarEmpresa = () => {
   const [cnpj, setCnpj] = useState('');

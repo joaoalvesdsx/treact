@@ -5,8 +5,7 @@ import Input from '../commons/Input';
 import Button from '../commons/Button';
 import '../styles/DetalhesProposta.css';
 import { useAuth } from '../../context/AuthContext';
-import api from './api';
-
+import api from '../../api';
 const DetalhesProposta = () => {
   const { id } = useParams();
   const [proposta, setProposta] = useState(null);

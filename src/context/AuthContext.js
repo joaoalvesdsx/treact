@@ -1,7 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-
+import api from '../../api';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -17,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (usuario, senha) => {
     try {
-      const response = await axios.post('http://localhost:5000/login', { usuario, senha });
+      const response = await api.post('/login', { usuario, senha });
       if (response.data.success) {
         localStorage.setItem('token', response.data.token);
         setAuth({ token: response.data.token, isAuthenticated: true });

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 import Table from '../commons/Table';
 import Button from '../commons/Button';
 import ContactCard from '../commons/ContactCard';
@@ -8,7 +7,7 @@ import Header from '../commons/Header';
 import Input from '../commons/Input';
 import '../styles/EmpresaDetails.css';
 import { useAuth } from '../../context/AuthContext';
-import api from './api';
+import api from '../../api';
 
 const EmpresaDetails = () => {
   const { auth } = useAuth();
