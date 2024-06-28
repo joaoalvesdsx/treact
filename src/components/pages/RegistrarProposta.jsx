@@ -22,7 +22,7 @@ const RegistrarProposta = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const { auth } = useAuth();
-
+  
   
 
   const fetchData = useCallback(async () => {
@@ -51,12 +51,13 @@ const RegistrarProposta = () => {
     } catch (error) {
       console.error('Erro ao buscar propostas:', error);
     }
-  },[auth.token]);
+  }, [auth.token]);
+
 
   useEffect(() => {
     fetchData();
-  },[fetchData]);
-
+    },[fetchData]);
+  
   const validate = () => {
     const newErrors = {};
     if (!referencia) newErrors.referencia = 'Referência é obrigatória';
