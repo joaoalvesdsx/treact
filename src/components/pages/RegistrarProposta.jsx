@@ -55,8 +55,8 @@ const RegistrarProposta = () => {
 
   useEffect(() => {
     fetchData();
-  },[fetchData], [auth.token]);
-  
+  },[fetchData]);
+
   const validate = () => {
     const newErrors = {};
     if (!referencia) newErrors.referencia = 'Referência é obrigatória';
