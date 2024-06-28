@@ -9,31 +9,21 @@ import { useAuth } from '../../context/AuthContext';
 
 const FollowUp = () => {
   const { auth } = useAuth();
-  const { chave } = useParams();
+  const { _id } = useParams(); 
   const [proposta, setProposta] = useState({});
   const [imagens, setImagens] = useState([]);
-  const [newImagem, setNewImagem] = useState({
-    descricao: '',
-    file: null
-  });
+  const [newImagem, setNewImagem] = useState({ descricao: '', file: null });
   const [revisoes, setRevisoes] = useState([]);
-  const [newRevisao, setNewRevisao] = useState({
-    data: '',
-    revisao: '',
-    descricao: ''
-  });
+  const [newRevisao, setNewRevisao] = useState({ data: '', revisao: '', descricao: '' });
   const [tratativas, setTratativas] = useState([]);
-  const [newTratativa, setNewTratativa] = useState({
-    data: '',
-    descricao: ''
-  });
+  const [newTratativa, setNewTratativa] = useState({ data: '', descricao: '' });
 
   useEffect(() => {
     const fetchPropostaData = async () => {
       try {
-        const response = await api.get(`/proposta/${chave}`,{headers: {
-          Authorization: `Bearer ${auth.token}`
-        }});
+        const response = await api.get(`/proposta/${_id}`, {
+          headers: { Authorization: `Bearer ${auth.token}` }
+        });
         setProposta(response.data);
         setImagens(response.data.imagens);
         setRevisoes(response.data.revisoes);
@@ -44,7 +34,7 @@ const FollowUp = () => {
     };
 
     fetchPropostaData();
-  }, [chave,auth.token]);
+  }, [_id, auth.token]);
 
   const handleAddImagem = async () => {
     const formData = new FormData();
@@ -52,10 +42,9 @@ const FollowUp = () => {
     formData.append('descricao', newImagem.descricao);
 
     try {
-      await api.post(`/upload_imagem/${proposta.chave}`, formData,{headers: {
-        Authorization: `Bearer ${auth.token}`
-      }}, {
+      await api.post(`/upload_imagem/${_id}`, formData, {
         headers: {
+          Authorization: `Bearer ${auth.token}`,
           'Content-Type': 'multipart/form-data'
         }
       });
@@ -66,6 +55,16 @@ const FollowUp = () => {
     }
   };
 
+  const handleUpdateStatus = async (newStatus) => {
+    try {
+      await api.post('/atualizar_status_proposta', { _id, status: newStatus }, {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      });
+      setProposta(prev => ({ ...prev, status: newStatus }));
+    } catch (error) {
+      console.error('Erro ao atualizar status:', error);
+    }
+  };
   const handleImagemChange = (e) => {
     setNewImagem({ ...newImagem, file: e.target.files[0] });
   };
@@ -75,25 +74,24 @@ const FollowUp = () => {
   };
 
   const handleSaveRevisao = async () => {
+    const revisao = { ...newRevisao, data: new Date().toLocaleDateString('pt-BR') };
     try {
-      const data = new Date().toLocaleDateString('pt-BR');
-      const revisao = { ...newRevisao, data };
-      await api.post(`/adicionar_revisao/${proposta.chave}`, revisao,{headers: {
-        Authorization: `Bearer ${auth.token}`
-      }});
+      await api.post(`/adicionar_revisao/${_id}`, revisao, {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      });
       setRevisoes([...revisoes, revisao]);
       setNewRevisao({ data: '', revisao: '', descricao: '' });
     } catch (error) {
       console.error('Erro ao salvar a revisão:', error);
     }
   };
+
   const handleSaveTratativa = async () => {
+    const tratativa = { ...newTratativa, data: new Date().toLocaleDateString('pt-BR') };
     try {
-      const data = new Date().toLocaleDateString('pt-BR');
-      const tratativa = { ...newTratativa, data };
-      await api.post(`/adicionar_tratativa/${proposta.chave}`, tratativa,{headers: {
-        Authorization: `Bearer ${auth.token}`
-      }});
+      await api.post(`/adicionar_tratativa/${_id}`, tratativa, {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      });
       setTratativas([...tratativas, tratativa]);
       setNewTratativa({ data: '', descricao: '' });
     } catch (error) {
@@ -107,16 +105,23 @@ const FollowUp = () => {
       
       <div className="proposta-info">
         <div className='box1'>
-          <p><strong>Número:</strong> {proposta.chave}</p>
+          <p><strong>ID:</strong> {proposta._id}</p>
           <p><strong>Cliente/Empresa:</strong> {proposta.cnpj_empresa}</p>
           <p><strong>Data da Proposta:</strong> {proposta.data}</p>
         </div>
         <div className='box2'>
           <p><strong>Descricao:</strong> {proposta.descricao}</p>
           <p><strong>Referência:</strong> {proposta.referencia}</p>
-          <p><strong>Status:</strong> {proposta.status}</p>  
-        </div>      
+          <p><strong>Status:</strong>
+            <select value={proposta.status} onChange={(e) => handleUpdateStatus(e.target.value)}>
+              <option value="Aberto">Aberto</option>
+              <option value="Fechado">Fechado</option>
+              <option value="Rejeitado">Rejeitado</option>
+            </select>
+          </p>
+        </div>
       </div>
+
       <h2>Imagens</h2>
       <div className="imagem-section">
         <div className='image-box'>
@@ -195,3 +200,5 @@ const FollowUp = () => {
 };
 
 export default FollowUp;
+
+      

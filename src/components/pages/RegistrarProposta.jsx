@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import api from '../../api';
 import Header from '../commons/Header';
 import Input from '../commons/Input';
@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const RegistrarProposta = () => {
-  const [chave, setChave] = useState(1);
   const [referencia, setReferencia] = useState('');
   const [data, setData] = useState('');
   const [observacao, setObservacao] = useState('');
@@ -23,48 +22,41 @@ const RegistrarProposta = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const { auth } = useAuth();
-  useEffect(() => {
-    const fetchPropostas = async () => {
-      try {
-        const responsePropostas = await api.get('/listar_todas_propostas', {
+
+  
+
+  const fetchData = useCallback(async () => {
+    try {
+      const responsePropostas = await api.get('/listar_todas_propostas', {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
+      const propostas = responsePropostas.data;
+      propostas.reverse();
+      setPropostas(propostas);
+      const empresaCNPJs = [...new Set(propostas.map(proposta => proposta.cnpj_empresa))];
+      const empresaResponses = await Promise.all(
+        empresaCNPJs.map(cnpj => api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
-        });
-        const propostas = responsePropostas.data;
-        propostas.reverse();
-        const empresaCNPJs = [...new Set(propostas.map(proposta => proposta.cnpj_empresa))];
-        
-        const empresaResponses = await Promise.all(
-          empresaCNPJs.map(cnpj_empresa => api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj_empresa}`, {
-            headers: {
-              Authorization: `Bearer ${auth.token}`
-            }
-          }))
-        );
-        
-        const empresaData = empresaResponses.reduce((acc, res) => {
-          acc[res.data.cnpj] = res.data.nome_empresa;
-          return acc;
-        }, {});
-        
-        setEmpresas(empresaData);
-        setPropostas(propostas);
-        // Se houverem propostas, determine a chave correta.
-        if (propostas.length > 0) {
-          const lastChave = propostas[0].chave;
-          setChave(lastChave + 1);
-        } else {
-          setChave(1);
-        }
-      } catch (error) {
-        console.error('Erro ao buscar propostas:', error);
-      }
-    };
+        }))
+      );
+      const empresaData = empresaResponses.reduce((acc, res) => {
+        acc[res.data.cnpj] = res.data.nome_empresa;
+        return acc;
+      }, {});
+      setEmpresas(empresaData);
+    } catch (error) {
+      console.error('Erro ao buscar propostas:', error);
+    }
+  },[auth.token]);
 
-    fetchPropostas();
-  }, [auth.token]);
-
+  useEffect(() => {
+    fetchData();
+  },[fetchData], [auth.token]);
+  
   const validate = () => {
     const newErrors = {};
     if (!referencia) newErrors.referencia = 'Referência é obrigatória';
@@ -82,13 +74,12 @@ const RegistrarProposta = () => {
     }
 
     const novaProposta = {
-      chave,
       referencia,
       data,
       observacao,
       descricao,
       status: 'Aberta',
-      cnpj_empresa: cnpj_empresa
+      cnpj_empresa
     };
 
     try {
@@ -97,79 +88,26 @@ const RegistrarProposta = () => {
           Authorization: `Bearer ${auth.token}`
         }
       });
-      const responsePropostas = await api.get('/listar_todas_propostas', {
-        headers: {
-          Authorization: `Bearer ${auth.token}`
-        }
-      });
-      const propostas = responsePropostas.data;
-      propostas.reverse();
-      const empresaCNPJs = [...new Set(propostas.map(proposta => proposta.cnpj_empresa))];
-      
-      const empresaResponses = await Promise.all(
-        empresaCNPJs.map(cnpj => api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
-          headers: {
-            Authorization: `Bearer ${auth.token}`
-          }
-        }))
-      );
-      
-      const empresaData = empresaResponses.reduce((acc, res) => {
-        acc[res.data.cnpj] = res.data.nome_empresa;
-        return acc;
-      }, {});
-      
-      setEmpresas(empresaData);
-      setPropostas(propostas);
+      fetchData();
       setReferencia('');
       setData('');
       setObservacao('');
       setDescricao('');
       setCnpjEmpresa('');
       setErrors({});
-      // Atualize a chave para a próxima proposta
-      if (propostas.length > 0) {
-        const lastChave = propostas[0].chave;
-        setChave(lastChave + 1);
-      } else {
-        setChave(1);
-      }
     } catch (error) {
       console.error('Erro ao registrar proposta:', error);
     }
   };
 
-  const handleStatusChange = async (id, newStatus) => {
+  const handleStatusChange = async (_id, newStatus) => {
     try {
-      await api.post('/atualizar_status_proposta', { id, status: newStatus }, {
+      await api.post('/atualizar_status_proposta', { _id, status: newStatus }, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
       });
-      const responsePropostas = await api.get('/listar_todas_propostas', {
-        headers: {
-          Authorization: `Bearer ${auth.token}`
-        }
-      });
-      const propostas = responsePropostas.data;
-      propostas.reverse();
-      const empresaCNPJs = [...new Set(propostas.map(proposta => proposta.cnpj_empresa))];
-      
-      const empresaResponses = await Promise.all(
-        empresaCNPJs.map(cnpj => api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
-          headers: {
-            Authorization: `Bearer ${auth.token}`
-          }
-        }))
-      );
-      
-      const empresaData = empresaResponses.reduce((acc, res) => {
-        acc[res.data.cnpj] = res.data.nome_empresa;
-        return acc;
-      }, {});
-      
-      setEmpresas(empresaData);
-      setPropostas(propostas);
+      fetchData();
     } catch (error) {
       console.error('Erro ao atualizar status:', error);
     }
@@ -182,7 +120,7 @@ const RegistrarProposta = () => {
   };
 
   const handleRowClick = (row) => {
-    navigate(`/followup/${row.chave}`);
+    navigate(`/followup/${row._id}`);
   };
 
   const filteredPropostas = propostas.filter(proposta => {
@@ -193,7 +131,7 @@ const RegistrarProposta = () => {
   });
 
   const columns = [
-    { header: 'Número', accessor: 'chave' },
+    { header: 'Número', accessor: '_id' },
     { header: 'Data', accessor: 'data' },
     { header: 'Cliente', accessor: 'cnpj_empresa', Cell: ({ value }) => empresas[value] || value },
     { header: 'Descrição', accessor: 'descricao' },
@@ -217,13 +155,6 @@ const RegistrarProposta = () => {
       <div className="registrar-proposta">
         <h2>Propostas</h2>
         <div className="form-row">
-          <Input 
-            classname="input-forms"
-            type="text"
-            placeholder="Número"
-            value={chave}
-            readOnly
-          />
           <Input 
             classname="input-forms"
             type="text"
@@ -269,7 +200,6 @@ const RegistrarProposta = () => {
         <div className="form-row">
           <Button className='button-form' onClick={handleRegistrarProposta}>Registrar</Button>
         </div>
-        
         <h4 className='H4'>Filtros : </h4>
         <div className="resultados">
           <div className='filtros'> 

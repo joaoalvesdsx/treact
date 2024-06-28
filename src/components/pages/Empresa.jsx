@@ -24,7 +24,7 @@ const EmpresaDetails = () => {
   const [newContact, setNewContact] = useState({
     nome: '',
     funcao: '',
-    numero: '',
+    telefone: '',
     celular: '',
     email: ''
   });
@@ -105,7 +105,7 @@ const EmpresaDetails = () => {
   };
 
   const handleAddContact = async () => {
-    if (!newContact.nome || !newContact.funcao || !newContact.numero || !newContact.celular || !newContact.email) {
+    if (!newContact.nome || !newContact.funcao || !newContact.telefone || !newContact.celular || !newContact.email) {
       alert('Por favor, preencha todos os campos.');
       return;
     }
@@ -118,7 +118,7 @@ const EmpresaDetails = () => {
       });
       setContatos([...contatos, { ...newContact, _id: response.data._id }]);
       setShowAddContact(false);
-      setNewContact({ nome: '', funcao: '', numero: '', celular: '', email: '' });
+      setNewContact({ nome: '', funcao: '', telefone: '', celular: '', email: '' });
     } catch (error) {
       console.error('Erro ao adicionar contato:', error);
     }
@@ -164,11 +164,10 @@ const EmpresaDetails = () => {
   };
 
   const handleRowClick = (row) => {
-    navigate(`/followup/${row.chave}`);
+    navigate(`/followup/${row._id}`);
   };
 
   const propostasColumns = [
-    { header: 'Numero', accessor: 'chave' },
     { header: 'Data', accessor: 'data' },
     { header: 'Status', accessor: 'status' },
     { header: 'Descrição', accessor: 'descricao' },
@@ -213,7 +212,7 @@ const EmpresaDetails = () => {
               id={contato._id}
               name={contato.nome} 
               funcao={contato.funcao} 
-              phone={contato.numero} 
+              phone={contato.telefone} 
               email={contato.email} 
               cellphone={contato.celular}
               onDelete={(name, cellphone) => handleDeleteContact(name, cellphone)}
@@ -250,8 +249,8 @@ const EmpresaDetails = () => {
                 className="input-add" 
                 type="text" 
                 placeholder="Telefone" 
-                value={newContact.numero} 
-                onChange={(e) => setNewContact({ ...newContact, numero: e.target.value })} 
+                value={newContact.telefone} 
+                onChange={(e) => setNewContact({ ...newContact, telefone: e.target.value })} 
               />
               <Input
                 className="input-add" 

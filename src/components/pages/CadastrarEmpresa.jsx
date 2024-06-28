@@ -20,7 +20,7 @@ const CadastrarEmpresa = () => {
     nome: '',
     funcao: '',
     email: '',
-    numero: '',
+    telefone: '',
     celular: '',
     observacao: ''
   });
@@ -58,7 +58,7 @@ const CadastrarEmpresa = () => {
     if (!contato.nome) tempErrors.contato_nome = "Nome do contato é obrigatório";
     if (!contato.funcao) tempErrors.contato_funcao = "Função do contato é obrigatória";
     if (!contato.email || !/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/.test(contato.email)) tempErrors.contato_email = "E-mail inválido";
-    if (!contato.numero) tempErrors.contato_numero = "Número do contato é obrigatório";
+    if (!contato.telefone) tempErrors.contato_telefone = "O Telefone  é obrigatório";
     if (!contato.celular || !/^\d{11}$/.test(contato.celular)) tempErrors.contato_celular = "Celular inválido. Deve ter 11 dígitos";
 
     setErrors(tempErrors);
@@ -91,7 +91,7 @@ const CadastrarEmpresa = () => {
           nome: '',
           funcao: '',
           email: '',
-          numero: '',
+          telefone: '',
           celular: '',
           observacao: ''
         });
@@ -204,9 +204,9 @@ const CadastrarEmpresa = () => {
           <div className="input-group">
             <Input
               type="text"
-              name="numero"
-              placeholder="Número"
-              value={contato.numero}
+              name="telefone"
+              placeholder="Telefone"
+              value={contato.telefone}
               onChange={handleContatoChange}
             />
             {errors.contato_numero && <span className="error">{errors.contato_numero}</span>}

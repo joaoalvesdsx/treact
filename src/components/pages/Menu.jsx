@@ -17,7 +17,7 @@ function Menu() {
   const handleLogout = () => {
     // Limpar o token de autenticação ou chamar uma função de logout no contexto
     // Por exemplo:
-    // auth.logout();
+    auth.logout();
     navigate('/');
   };
 
