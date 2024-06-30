@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://backend-5eid.onrender.com', // Use a variável de ambiente para a URL da API
+  baseURL: process.env.REACT_APP_API_URL, // Use a variável de ambiente para a URL da API
   timeout: 10000, // Configuração opcional de timeout
   headers: {
     'Content-Type': 'application/json',
