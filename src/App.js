@@ -29,7 +29,7 @@ function App() {
           <Route path="/empresa/:cnpj" element={<PrivateRoute><Empresa /></PrivateRoute>} />
           <Route path="/registrar-contato" element={<PrivateRoute><RegistrarContato /></PrivateRoute>} />
           <Route path="/detalhes-proposta/:id" element={<PrivateRoute><DetalhesProposta /></PrivateRoute>} />
-          <Route path="/followup/:chave" element={<PrivateRoute><Followup /></PrivateRoute>} />
+          <Route path="/followup/:_id" element={<PrivateRoute><Followup /></PrivateRoute>} />
           <Route path="/servicos" element={<PrivateRoute><Servicos /></PrivateRoute>} />
         </Routes>
       </AuthProvider>
