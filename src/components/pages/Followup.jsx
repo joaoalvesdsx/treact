@@ -20,6 +20,7 @@ const FollowUp = () => {
 
   useEffect(() => {
     const fetchPropostaData = async () => {
+      console.log(_id)
       try {
         const response = await api.get(`/proposta/${_id}`, {
           headers: { Authorization: `Bearer ${auth.token}` }
