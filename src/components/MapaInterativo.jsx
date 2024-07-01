@@ -28,18 +28,21 @@ const MapaInterativo = ({ onRegionClick }) => {
   };
 
   return (
+    <div className='mapa'>
     <div className="map-container">
       <MapaSVG 
         onClick={handleSVGClick} 
         onMouseOver={handleMouseEnter}
         onMouseOut={handleMouseLeave}
       />
+    </div>
+    <div>
       {hoveredDDD && (
-        <div 
-          className="tooltip" >
+        <div className="tooltip" >
           DDD: {hoveredDDD}
         </div>
       )}
+    </div>
     </div>
   );
 };

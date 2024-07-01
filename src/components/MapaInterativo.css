@@ -33,3 +33,9 @@
     pointer-events: none;
     color: #FFF;
   }
+
+  .mapa{
+    width: 100%;
+    display: flex;
+    
+  }
