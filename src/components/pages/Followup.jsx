@@ -270,7 +270,7 @@ const FollowUp = () => {
         </div>
       </div>
           <div className='botao-section'>
-            <Button className='button-delete' onClick={handleDeleteProposta}>Apagar Proposta</Button>
+            <Button className='botaod' onClick={handleDeleteProposta}>Apagar Proposta</Button>
 
           </div>
     </div>
