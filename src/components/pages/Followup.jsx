@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Modal from 'react-modal';
 import api from '../../api';
 import Header from '../commons/Header';
 import Input from '../commons/Input';
 import Button from '../commons/Button';
 import '../styles/Followup.css';
 import { useAuth } from '../../context/AuthContext';
-
-Modal.setAppElement('#root'); // Para acessibilidade
 
 const FollowUp = () => {
   const { auth } = useAuth();
@@ -21,8 +18,6 @@ const FollowUp = () => {
   const [newRevisao, setNewRevisao] = useState({ data: '', revisao: '', descricao: '' });
   const [tratativas, setTratativas] = useState([]);
   const [newTratativa, setNewTratativa] = useState({ data: '', descricao: '' });
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [currentImage, setCurrentImage] = useState(null);
 
   useEffect(() => {
     const fetchPropostaData = async () => {
@@ -57,20 +52,20 @@ const FollowUp = () => {
     formData.append('descricao', newImagem.descricao);
 
     try {
-      console.log('Enviando imagem...');
-      const response = await api.post(`/upload_imagem/${_id}`, formData, {
-        headers: {
-          Authorization: `Bearer ${auth.token}`,
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      console.log('Resposta do upload da imagem:', response);
-      setImagens([...imagens, { descricao: newImagem.descricao, path: newImagem.file.name }]);
-      setNewImagem({ descricao: '', file: null });
+        console.log('Enviando imagem...');
+        const response = await api.post(`/upload_imagem/${_id}`, formData, {
+            headers: {
+                Authorization: `Bearer ${auth.token}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log('Resposta do upload da imagem:', response);
+        setImagens([...imagens, { descricao: newImagem.descricao, path: newImagem.file.name }]);
+        setNewImagem({ descricao: '', file: null });
     } catch (error) {
-      console.error('Erro ao fazer upload da imagem:', error);
+        console.error('Erro ao fazer upload da imagem:', error);
     }
-  };
+};
 
   const handleUpdateStatus = async (newStatus) => {
     try {
@@ -127,16 +122,6 @@ const FollowUp = () => {
     }
   };
 
-  const openModal = (image) => {
-    setCurrentImage(image);
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-    setCurrentImage(null);
-  };
-
   return (
     <div className="follow-up">
       <Header text="Follow Up" showBackButton={true} />
@@ -163,8 +148,8 @@ const FollowUp = () => {
       <h2>Imagens</h2>
       <div className="imagem-section">
         <div className='image-box'>
-          {imagens.map((imagem, index) => (
-            <div key={index} className="imagem" onClick={() => openModal(imagem)}>            
+          {imagens.map(imagem => (
+            <div key={imagem.path} className="imagem">            
               <img src={`https://backend-5eid.onrender.com/get_imagem/${imagem.path}`} alt={imagem.descricao} width="250" height="250" />
               <p>{imagem.descricao}</p>
             </div>
@@ -186,23 +171,6 @@ const FollowUp = () => {
           <Button className='button-add' onClick={handleAddImagem}>+</Button>
         </div>
       </div>
-
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Imagem"
-        className="Modal"
-        overlayClassName="Overlay"
-      >
-        {currentImage && (
-          <>
-            <img src={`https://backend-5eid.onrender.com/get_imagem/${currentImage.path}`} alt={currentImage.descricao} />
-            <p>{currentImage.descricao}</p>
-            <Button onClick={closeModal}>Fechar</Button>
-          </>
-        )}
-      </Modal>
-
       <h2>Revisões</h2>
       <div className="revisao-section">
         <div className='revisao'>
