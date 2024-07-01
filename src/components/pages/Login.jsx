@@ -9,16 +9,10 @@ import ImageL from '../img/logo.jpeg';
 function Login() {
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
-  const [error, setError] = useState('');
   const { login } = useAuth();
 
   const handleLogin = async () => {
-    try {
-      setError('');
-      await login(usuario, senha);
-    } catch (e) {
-      setError('Nome de usuário ou senha incorretos.');
-    }
+    await login(usuario, senha);
   };
 
   return (
@@ -54,8 +48,7 @@ function Login() {
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
               />
-            </div>
-            {error && <p className="error">{error}</p>}
+            </div>  
           </div>
           <Button className="overlap" onClick={handleLogin}>
             <div className="text-wrapper-2">Entrar</div>

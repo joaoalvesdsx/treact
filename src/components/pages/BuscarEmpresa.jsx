@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import MapaInterativo from '../MapaInterativo';
 import Header from '../commons/Header';
-import '../styles/BuscarEmpresa.css'; // Importa o CSS aqui
+import '../styles/BuscarEmpresa.css';
 import Input from '../commons/Input';
 import Button from '../commons/Button';
 import Table from '../commons/Table';
@@ -12,6 +12,7 @@ import api from '../../api';
 const BuscarEmpresa = () => {
   const [cnpj, setCnpj] = useState('');
   const [nome_empresa, setNome] = useState('');
+  const [cidade, setCidade] = useState('');
   const [empresas, setEmpresas] = useState([]);
   const navigate = useNavigate();
   const { auth } = useAuth();
@@ -32,6 +33,19 @@ const BuscarEmpresa = () => {
   const handleBuscarNome = async () => {
     try {
       const response = await api.get(`/listar_empresas_por_nome?nome=${nome_empresa}`, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      });
+      setEmpresas(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar empresas:', error);
+    }
+  };
+
+  const handleBuscarCidade = async () => {
+    try {
+      const response = await api.get(`/listar_empresas_por_cidade?cidade=${cidade}`, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
@@ -95,6 +109,15 @@ const BuscarEmpresa = () => {
               onChange={(e) => setNome(e.target.value)}
             />
             <Button className='button' onClick={handleBuscarNome}>Buscar</Button>
+          </div>
+          <div className="busca-form">
+            <Input
+              type="text"
+              placeholder="Buscar por Cidade"
+              value={cidade}
+              onChange={(e) => setCidade(e.target.value)}
+            />
+            <Button className='button' onClick={handleBuscarCidade}>Buscar</Button>
           </div>
         </div>
       </div>
