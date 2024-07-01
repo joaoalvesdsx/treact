@@ -108,8 +108,8 @@ img {
 }
 
 h2{
-    margin-left: 10px;
-    text-align: start;
+    margin: 0px;
+    text-align: center;
 }
 
 #file-upload-button{
