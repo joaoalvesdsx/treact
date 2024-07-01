@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import Table from '../commons/Table';
-import Button from '../commons/Button';
-import ContactCard from '../commons/ContactCard';
+import { useParams, useNavigate } from 'react-router-dom';
+import api from '../../api';
 import Header from '../commons/Header';
 import Input from '../commons/Input';
+import Button from '../commons/Button';
+import Table from '../commons/Table';
+import ContactCard from '../commons/ContactCard'
 import '../styles/EmpresaDetails.css';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../api';
-
-
-
-
-
-
 
 const EmpresaDetails = () => {
   const { auth } = useAuth();
@@ -169,17 +163,15 @@ const EmpresaDetails = () => {
     }
   };
 
-  const handleDeleteEmpresa = async (cnpj) => {
-    
+  const handleDeleteEmpresa = async () => {
     if (window.confirm('Você realmente quer excluir esta empresa?')) {
       try {
-        await api.delete(`/deletar_empresa`, { data: { cnpj } }, {
+        await api.delete(`/deletar_empresa`, {
           headers: {
             Authorization: `Bearer ${auth.token}`
-          }
+          },
+          data: { cnpj }
         });
-        
-        // Redirect to a different page after deletion
         navigate('/listar-empresas');
       } catch (error) {
         console.error('Erro ao deletar empresa:', error);
@@ -226,7 +218,7 @@ const EmpresaDetails = () => {
               <label className='datas'>Última visita: </label>
               <input className='dt' type="date" value={ultimaVisita} onChange={handleUltimaVisitaChange} onBlur={handleUltimaVisitaBlur} />
             </div>
-            <button className="delete-button" onClick={handleDeleteEmpresa(empresa.cnpj)}>X</button>
+            <button className="delete-button" onClick={handleDeleteEmpresa}>X</button>
           </div>
         </div>
 
@@ -291,8 +283,8 @@ const EmpresaDetails = () => {
                 value={newContact.email}
                 onChange={(e) => setNewContact({ ...newContact, email: e.target.value })}
               />
-              <button className='button-contact' onClick={handleAddContact}>Salvar</button>
-              <button className='button-contact' onClick={() => setShowAddContact(false)}>Cancelar</button>
+              <Button className='button-contact' onClick={handleAddContact}>Salvar</Button>
+              <Button className='button-contact' onClick={() => setShowAddContact(false)}>Cancelar</Button>
             </div>
           </div>
         )}
