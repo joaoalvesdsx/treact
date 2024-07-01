@@ -131,7 +131,7 @@ const FollowUp = () => {
   const handleDeleteProposta = async () => {
     try {
       console.log('Apagando proposta...');
-      const response = await api.delete(`/proposta/${_id}`, {
+      const response = await api.delete(`/deletar_proposta/${_id}`, {
         headers: { Authorization: `Bearer ${auth.token}` },
         data: {_id}
       });
