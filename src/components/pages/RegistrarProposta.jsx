@@ -15,7 +15,6 @@ const RegistrarProposta = () => {
   const [descricao, setDescricao] = useState('');
   const [cnpj_empresa, setCnpjEmpresa] = useState('');
   const [propostas, setPropostas] = useState([]);
-  const [empresas, setEmpresas] = useState({});
   const [filtroStatus, setFiltroStatus] = useState('Todos');
   const [filtroDataInicio, setFiltroDataInicio] = useState('');
   const [filtroDataFim, setFiltroDataFim] = useState('');
@@ -31,8 +30,6 @@ const RegistrarProposta = () => {
         }
       });
       const propostas = responsePropostas.data;
-      propostas.reverse();
-      setPropostas(propostas);
 
       const empresaCNPJs = [...new Set(propostas.map(proposta => proposta.cnpj_empresa))];
       const empresaResponses = await Promise.all(
@@ -42,11 +39,19 @@ const RegistrarProposta = () => {
           }
         }))
       );
+
       const empresaData = empresaResponses.reduce((acc, res) => {
         acc[res.data.cnpj] = res.data.nome_empresa;
         return acc;
       }, {});
-      setEmpresas(empresaData);
+
+      const propostasComNomeEmpresa = propostas.map(proposta => ({
+        ...proposta,
+        nome_empresa: empresaData[proposta.cnpj_empresa] || proposta.cnpj_empresa
+      }));
+
+      propostasComNomeEmpresa.reverse();
+      setPropostas(propostasComNomeEmpresa);
     } catch (error) {
       console.error('Erro ao buscar propostas:', error);
     }
@@ -132,7 +137,7 @@ const RegistrarProposta = () => {
   const columns = [
     { header: 'Referência', accessor: 'referencia' },
     { header: 'Data', accessor: 'data' },
-    { header: 'Cliente', accessor: 'cnpj_empresa', Cell: ({ value }) => empresas[value] || value },
+    { header: 'Cliente', accessor: 'nome_empresa' },
     { header: 'Descrição', accessor: 'descricao' },
     { header: 'Observação', accessor: 'observacao' },
     { header: 'Status', accessor: 'status', Cell: ({ row }) => (
