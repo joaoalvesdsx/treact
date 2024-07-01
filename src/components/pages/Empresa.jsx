@@ -9,9 +9,16 @@ import '../styles/EmpresaDetails.css';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api';
 
+
+
+
+
+
+
 const EmpresaDetails = () => {
   const { auth } = useAuth();
   const { cnpj } = useParams();
+  const navigate = useNavigate();
   const [empresa, setEmpresa] = useState({});
   const [contatos, setContatos] = useState([]);
   const [propostas, setPropostas] = useState([]);
@@ -33,27 +40,26 @@ const EmpresaDetails = () => {
     descricao: ''
   });
   const [selectedTipo, setSelectedTipo] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEmpresaData = async () => {
       try {
-        const empresaResponse = await api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj}`,{
+        const empresaResponse = await api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
         });
-        const contatosResponse = await api.get(`/listar_contato_por_cnpj?cnpj=${cnpj}`,{
+        const contatosResponse = await api.get(`/listar_contato_por_cnpj?cnpj=${cnpj}`, {
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
         });
-        const propostasResponse = await api.get(`/listar_proposta_por_cnpj?cnpj=${cnpj}`,{
+        const propostasResponse = await api.get(`/listar_proposta_por_cnpj?cnpj=${cnpj}`, {
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
         });
-        const visitasResponse = await api.get(`/listar_visitas_por_cnpj?cnpj=${cnpj}`,{
+        const visitasResponse = await api.get(`/listar_visitas_por_cnpj?cnpj=${cnpj}`, {
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
@@ -73,12 +79,12 @@ const EmpresaDetails = () => {
     };
 
     fetchEmpresaData();
-  }, [cnpj,auth.token]);
+  }, [cnpj, auth.token]);
 
   const handleStatusToggle = () => {
     const novoStatus = status === 'Ativo' ? 'Inativo' : 'Ativo';
     setStatus(novoStatus);
-    api.post(`/atualizar_status_empresa`, { cnpj, status: novoStatus },{
+    api.post(`/atualizar_status_empresa`, { cnpj, status: novoStatus }, {
       headers: {
         Authorization: `Bearer ${auth.token}`
       }
@@ -89,7 +95,7 @@ const EmpresaDetails = () => {
   const handleUltimaVisitaChange = (e) => setUltimaVisita(e.target.value);
 
   const handleUltimaVendaBlur = () => {
-    api.post(`/atualizar_ultima_venda`, { cnpj, ultimaVenda },{
+    api.post(`/atualizar_ultima_venda`, { cnpj, ultimaVenda }, {
       headers: {
         Authorization: `Bearer ${auth.token}`
       }
@@ -97,7 +103,7 @@ const EmpresaDetails = () => {
   };
 
   const handleUltimaVisitaBlur = () => {
-    api.post(`/atualizar_ultima_visita`, { cnpj, ultimaVisita },{
+    api.post(`/atualizar_ultima_visita`, { cnpj, ultimaVisita }, {
       headers: {
         Authorization: `Bearer ${auth.token}`
       }
@@ -111,7 +117,7 @@ const EmpresaDetails = () => {
     }
 
     try {
-      const response = await api.post('/cadastrar_contato', { ...newContact, cnpj_empresa: cnpj },{
+      const response = await api.post('/cadastrar_contato', { ...newContact, cnpj_empresa: cnpj }, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
@@ -127,24 +133,18 @@ const EmpresaDetails = () => {
   const handleDeleteContact = async (_id) => {
     if (window.confirm('Você realmente quer excluir este contato?')) {
       try {
-        console.log(_id);
-        const response = await api.delete('/deletar_contato', {
+        await api.delete(`/deletar_contato`, { data: { _id } }, {
           headers: {
-            Authorization: `Bearer ${auth.token}`,
-          },
-          data: { _id }, // Passando o _id no corpo da requisição
+            Authorization: `Bearer ${auth.token}`
+          }
         });
-        if (response.status === 200) {
-          setContatos(contatos.filter(contato => contato._id !== _id));
-        } else {
-          console.error('Erro ao deletar contato:', response.data);
-        }
+        setContatos(contatos.filter(contato => contato._id !== _id));
       } catch (error) {
         console.error('Erro ao deletar contato:', error);
       }
     }
   };
-  
+
   const handleAddVisita = async () => {
     if (!newVisita.tipo || !newVisita.descricao) {
       alert('Por favor, preencha todos os campos.');
@@ -155,7 +155,7 @@ const EmpresaDetails = () => {
     const novaVisita = { ...newVisita, data, cnpj_empresa: cnpj };
 
     try {
-      const response = await api.post('/cadastrar_visita', novaVisita,{
+      const response = await api.post('/cadastrar_visita', novaVisita, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
@@ -166,6 +166,22 @@ const EmpresaDetails = () => {
       setSelectedTipo('');
     } catch (error) {
       console.error('Erro ao adicionar visita:', error);
+    }
+  };
+
+  const handleDeleteEmpresa = async () => {
+    if (window.confirm('Você realmente quer excluir esta empresa?')) {
+      try {
+        await api.delete(`/deletar_empresa`, { data: { cnpj } }, {
+          headers: {
+            Authorization: `Bearer ${auth.token}`
+          }
+        });
+        // Redirect to a different page after deletion
+        navigate('/listar-empresas');
+      } catch (error) {
+        console.error('Erro ao deletar empresa:', error);
+      }
     }
   };
 
@@ -208,18 +224,19 @@ const EmpresaDetails = () => {
               <label className='datas'>Última visita: </label>
               <input className='dt' type="date" value={ultimaVisita} onChange={handleUltimaVisitaChange} onBlur={handleUltimaVisitaBlur} />
             </div>
+            <button className="delete-button" onClick={handleDeleteEmpresa}>X</button>
           </div>
-        </div>  
+        </div>
 
         <div className="contatos-container">
           {contatos.map(contato => (
-            <ContactCard 
-              key={contato._id} 
+            <ContactCard
+              key={contato._id}
               id={contato._id}
-              name={contato.nome} 
-              funcao={contato.funcao} 
-              phone={contato.telefone} 
-              email={contato.email} 
+              name={contato.nome}
+              funcao={contato.funcao}
+              phone={contato.telefone}
+              email={contato.email}
               cellphone={contato.celular}
               onDelete={() => handleDeleteContact(contato._id)}
             />
@@ -239,38 +256,38 @@ const EmpresaDetails = () => {
               <h3>Adicionar Contato</h3>
               <Input
                 className="input-add"
-                type="text" 
-                placeholder="Nome" 
-                value={newContact.nome} 
-                onChange={(e) => setNewContact({ ...newContact, nome: e.target.value })} 
+                type="text"
+                placeholder="Nome"
+                value={newContact.nome}
+                onChange={(e) => setNewContact({ ...newContact, nome: e.target.value })}
               />
               <Input
-                className="input-add" 
-                type="text" 
-                placeholder="Função" 
-                value={newContact.funcao} 
-                onChange={(e) => setNewContact({ ...newContact, funcao: e.target.value })} 
+                className="input-add"
+                type="text"
+                placeholder="Função"
+                value={newContact.funcao}
+                onChange={(e) => setNewContact({ ...newContact, funcao: e.target.value })}
               />
               <Input
-                className="input-add" 
-                type="text" 
-                placeholder="Telefone" 
-                value={newContact.telefone} 
-                onChange={(e) => setNewContact({ ...newContact, telefone: e.target.value })} 
+                className="input-add"
+                type="text"
+                placeholder="Telefone"
+                value={newContact.telefone}
+                onChange={(e) => setNewContact({ ...newContact, telefone: e.target.value })}
               />
               <Input
-                className="input-add" 
-                type="text" 
-                placeholder="Celular" 
-                value={newContact.celular} 
-                onChange={(e) => setNewContact({ ...newContact, celular: e.target.value })} 
+                className="input-add"
+                type="text"
+                placeholder="Celular"
+                value={newContact.celular}
+                onChange={(e) => setNewContact({ ...newContact, celular: e.target.value })}
               />
               <Input
-                className="input-add" 
-                type="text" 
-                placeholder="Email" 
-                value={newContact.email} 
-                onChange={(e) => setNewContact({ ...newContact, email: e.target.value })} 
+                className="input-add"
+                type="text"
+                placeholder="Email"
+                value={newContact.email}
+                onChange={(e) => setNewContact({ ...newContact, email: e.target.value })}
               />
               <Button className='button-contact' onClick={handleAddContact}>Salvar</Button>
               <Button className='button-contact' onClick={() => setShowAddContact(false)}>Cancelar</Button>
@@ -310,14 +327,14 @@ const EmpresaDetails = () => {
                   Contato
                 </Button>
                 <Input
-                className="input-add" 
-                type="text" 
-                placeholder="Descrição" 
-                value={newVisita.descricao} 
-                onChange={(e) => setNewVisita({ ...newVisita, descricao: e.target.value })} 
-              />
+                  className="input-add"
+                  type="text"
+                  placeholder="Descrição"
+                  value={newVisita.descricao}
+                  onChange={(e) => setNewVisita({ ...newVisita, descricao: e.target.value })}
+                />
               </div>
-              
+
               <div className='botoes-tipo-2'>
                 <Button className='botao-f' onClick={handleAddVisita}>Salvar</Button>
                 <Button className='botao-f' onClick={() => setShowAddVisita(false)}>Cancelar</Button>
@@ -327,11 +344,11 @@ const EmpresaDetails = () => {
         )}
 
         <div className="propostas-section">
-        
+
           <h2 className='proposta-titulo'>Propostas</h2>
-          <Table columns={propostasColumns} data={propostas} onRowClick={handleRowClick}/>
+          <Table columns={propostasColumns} data={propostas} onRowClick={handleRowClick} />
         </div>
-        
+
       </div>
     </div>
   );
