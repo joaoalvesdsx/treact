@@ -47,6 +47,7 @@ const BuscarEmpresa = () => {
       setErrorMessage('Por favor, insira um nome para buscar.');
       return;
     }
+    console.log(nome_empresa)
     try {
       const response = await api.get(`/listar_empresas_por_nome?nome=${nome_empresa}`, {
         headers: {
