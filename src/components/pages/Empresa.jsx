@@ -124,15 +124,15 @@ const EmpresaDetails = () => {
     }
   };
 
-  const handleDeleteContact = async (nome, celular) => {
+  const handleDeleteContact = async (_id) => {
     if (window.confirm('Você realmente quer excluir este contato?')) {
       try {
-        await api.delete(`/deletar_contato`, { data: { nome, celular } },{
+        await api.delete(`/deletar_contato`, { data: { _id} },{
           headers: {
             Authorization: `Bearer ${auth.token}`
           }
         });
-        setContatos(contatos.filter(contato => !(contato.nome === nome && contato.celular === celular)));
+        setContatos(contatos.filter(contato => !(contato.nome === _id)));
       } catch (error) {
         console.error('Erro ao deletar contato:', error);
       }
@@ -215,7 +215,7 @@ const EmpresaDetails = () => {
               phone={contato.telefone} 
               email={contato.email} 
               cellphone={contato.celular}
-              onDelete={(name, cellphone) => handleDeleteContact(name, cellphone)}
+              onDelete={(_id) => handleDeleteContact(_id)}
             />
           ))}
           <div className="add-contact-button" onClick={() => setShowAddContact(true)}>
