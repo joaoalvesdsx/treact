@@ -126,6 +126,7 @@ const EmpresaDetails = () => {
 
   const handleDeleteContact = async (_id) => {
     if (window.confirm('Você realmente quer excluir este contato?')) {
+      console.log(_id)
       try {
         await api.delete(`/deletar_contato`, { data: { _id } },{
           headers: {
