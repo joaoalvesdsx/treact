@@ -20,11 +20,12 @@ const FollowUp = () => {
 
   useEffect(() => {
     const fetchPropostaData = async () => {
-
       try {
+        console.log('Buscando dados da proposta...');
         const response = await api.get(`/proposta/${_id}`, {
           headers: { Authorization: `Bearer ${auth.token}` }
         });
+        console.log('Dados da proposta recebidos:', response.data);
         setProposta(response.data);
         setImagens(response.data.imagens);
         setRevisoes(response.data.revisoes);
@@ -43,6 +44,7 @@ const FollowUp = () => {
     formData.append('descricao', newImagem.descricao);
 
     try {
+      console.log('Enviando imagem...');
       await api.post(`/upload_imagem/${_id}`, formData, {
         headers: {
           Authorization: `Bearer ${auth.token}`,
@@ -58,14 +60,21 @@ const FollowUp = () => {
 
   const handleUpdateStatus = async (newStatus) => {
     try {
-      await api.post('/atualizar_status_proposta', { _id, status: newStatus }, {
+      console.log('Enviando requisição para atualizar status:', newStatus);
+      const response = await api.post('/atualizar_status_proposta', { _id, status: newStatus }, {
         headers: { Authorization: `Bearer ${auth.token}` }
       });
-      setProposta(prev => ({ ...prev, status: newStatus }));
+      console.log('Resposta da atualização de status:', response);
+      if (response.status === 200) {
+        setProposta(prev => ({ ...prev, status: newStatus }));
+      } else {
+        console.error('Erro ao atualizar status:', response);
+      }
     } catch (error) {
       console.error('Erro ao atualizar status:', error);
     }
   };
+
   const handleImagemChange = (e) => {
     setNewImagem({ ...newImagem, file: e.target.files[0] });
   };
@@ -77,6 +86,7 @@ const FollowUp = () => {
   const handleSaveRevisao = async () => {
     const revisao = { ...newRevisao, data: new Date().toLocaleDateString('pt-BR') };
     try {
+      console.log('Salvando revisão...');
       await api.post(`/adicionar_revisao/${_id}`, revisao, {
         headers: { Authorization: `Bearer ${auth.token}` }
       });
@@ -90,6 +100,7 @@ const FollowUp = () => {
   const handleSaveTratativa = async () => {
     const tratativa = { ...newTratativa, data: new Date().toLocaleDateString('pt-BR') };
     try {
+      console.log('Salvando tratativa...');
       await api.post(`/adicionar_tratativa/${_id}`, tratativa, {
         headers: { Authorization: `Bearer ${auth.token}` }
       });
@@ -201,5 +212,3 @@ const FollowUp = () => {
 };
 
 export default FollowUp;
-
-      
