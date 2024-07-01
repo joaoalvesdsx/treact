@@ -94,3 +94,13 @@ h2{
 #file-upload-button{
     border-radius: 5px;
 }
+
+select{
+    background-color: #a3a3a357;
+    border: none;
+    border-radius: 10px;
+    font-family: Montserrat;
+    height: 30px;
+    margin-left: 15px;
+    width: 120px;
+}
