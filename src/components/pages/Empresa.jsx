@@ -169,8 +169,8 @@ const EmpresaDetails = () => {
     }
   };
 
-  const handleDeleteEmpresa = async (cnpj) => {
-    if (window.confirm('Você realmente quer excluir esta empresa?')) {
+  const handleDeleteEmpresa = async () => {
+    if (window.confirm('Você realmente quer excluir esta empresa?',cnpj)) {
       try {
         await api.delete(`/deletar_empresa`, { data: { cnpj } }, {
           headers: {
@@ -214,7 +214,7 @@ const EmpresaDetails = () => {
 
           <div className='dados-att'>
 
-            <button className="delete-button" onClick={handleDeleteEmpresa(empresa.cnpj)}>X</button>
+            <button className="delete-button" onClick={handleDeleteEmpresa}>X</button>
             <button className={`status-button ${status.toLowerCase()}`} onClick={handleStatusToggle}>
               {status}
             </button>
