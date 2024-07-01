@@ -207,6 +207,7 @@ const EmpresaDetails = () => {
           </div>
 
           <div className='dados-att'>
+            <button className="delete-button" onClick={handleDeleteEmpresa}>X</button>
             <button className={`status-button ${status.toLowerCase()}`} onClick={handleStatusToggle}>
               {status}
             </button>
@@ -218,7 +219,7 @@ const EmpresaDetails = () => {
               <label className='datas'>Última visita: </label>
               <input className='dt' type="date" value={ultimaVisita} onChange={handleUltimaVisitaChange} onBlur={handleUltimaVisitaBlur} />
             </div>
-            <button className="delete-button" onClick={handleDeleteEmpresa}>X</button>
+            
           </div>
         </div>
 
