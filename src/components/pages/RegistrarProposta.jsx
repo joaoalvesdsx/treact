@@ -175,11 +175,11 @@ const RegistrarProposta = () => {
           <Input 
             classname="input-forms"
             type="text"
-            placeholder="Referência"
-            value={referencia}
-            onChange={(e) => setReferencia(e.target.value)}
+            placeholder="Descrição - Produto, serviço"
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
           />
-          {errors.referencia && <span className="error">{errors.referencia}</span>}
+          {errors.descricao && <span className="error">{errors.descricao}</span>}
           <Input 
             classname="input-forms"
             type="date"
@@ -208,11 +208,11 @@ const RegistrarProposta = () => {
           <Input 
             classname="input-forms"
             type="text"
-            placeholder="Descrição - Produto, serviço"
-            value={descricao}
-            onChange={(e) => setDescricao(e.target.value)}
+            placeholder="Referência"
+            value={referencia}
+            onChange={(e) => setReferencia(e.target.value)}
           />
-          {errors.descricao && <span className="error">{errors.descricao}</span>}
+          {errors.referencia && <span className="error">{errors.referencia}</span>}
         </div>
         <div className="form-row">
           <Button className='button-form' onClick={handleRegistrarProposta}>Registrar</Button>

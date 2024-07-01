@@ -26,6 +26,7 @@ const CadastrarEmpresa = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState('');
   const { auth } = useAuth();
 
   const handleEmpresaChange = (e) => {
@@ -68,15 +69,19 @@ const CadastrarEmpresa = () => {
   const handleSubmit = async () => {
     if (validate()) {
       try {
-        await api.post('/cadastrar_empresa', empresa,{headers: {
-          Authorization: `Bearer ${auth.token}`
-        }});
+        await api.post('/cadastrar_empresa', empresa, {
+          headers: {
+            Authorization: `Bearer ${auth.token}`
+          }
+        });
         await api.post('/cadastrar_contato', {
           ...contato,
           cnpj_empresa: empresa.cnpj // Relaciona o contato com a empresa
-        },{headers: {
-          Authorization: `Bearer ${auth.token}`
-        }});
+        }, {
+          headers: {
+            Authorization: `Bearer ${auth.token}`
+          }
+        });
         alert('Empresa e Contato cadastrados com sucesso!');
         // Limpar os campos do formulário
         setEmpresa({
@@ -96,8 +101,10 @@ const CadastrarEmpresa = () => {
           observacao: ''
         });
         setErrors({});
+        setServerError('');
       } catch (error) {
         console.error('Erro ao cadastrar empresa e contato:', error);
+        setServerError(error.response.data.error || 'Erro ao cadastrar empresa e contato');
       }
     }
   };
@@ -106,6 +113,7 @@ const CadastrarEmpresa = () => {
     <>
       <Header text="Cadastrar Empresa" showBackButton={true} />
       <div className="cadastrar-empresa-container">
+        {serverError && <div className="error-server">{serverError}</div>}
         <h2>Empresa:</h2>
         <div className="empresa-form">
           <div className="input-group">
@@ -209,7 +217,7 @@ const CadastrarEmpresa = () => {
               value={contato.telefone}
               onChange={handleContatoChange}
             />
-            {errors.contato_numero && <span className="error">{errors.contato_numero}</span>}
+            {errors.contato_telefone && <span className="error">{errors.contato_telefone}</span>}
           </div>
           <div className="input-group">
             <Input
