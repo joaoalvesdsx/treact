@@ -291,8 +291,8 @@ const EmpresaDetails = () => {
                 value={newContact.email}
                 onChange={(e) => setNewContact({ ...newContact, email: e.target.value })}
               />
-              <Button className='button-contact' onClick={handleAddContact}>Salvar</Button>
-              <Button className='button-contact' onClick={() => setShowAddContact(false)}>Cancelar</Button>
+              <button className='button-contact' onClick={handleAddContact}>Salvar</button>
+              <button className='button-contact' onClick={() => setShowAddContact(false)}>Cancelar</button>
             </div>
           </div>
         )}
