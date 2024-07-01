@@ -82,6 +82,7 @@ img {
     margin: 20px;
     flex-direction: column;
     border-bottom: black solid 1px;
+    align-items: center;
 }
 .revisao{
     background-color: rgba(163, 163, 163);
@@ -102,7 +103,7 @@ img {
     justify-content: space-between;
     margin: 20px;
     flex-direction: column;
-
+    align-items: center;
 }
 
 .input-add-tratativa{
@@ -163,7 +164,7 @@ h2{
     width: 100%;
   }
 
-  .botaod{
+.botaod{
     margin: 20px 0;
     width: 20%;
 }
