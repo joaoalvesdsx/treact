@@ -127,10 +127,11 @@ const EmpresaDetails = () => {
   const handleDeleteContact = async (_id) => {
     if (window.confirm('Você realmente quer excluir este contato?')) {
       try {
-        await api.delete(`/deletar_contato`, { data: { _id } }, {
+        await api.delete(`/deletar_contato`, {
           headers: {
             Authorization: `Bearer ${auth.token}`
-          }
+          },
+          data: { _id }
         });
         setContatos(contatos.filter(contato => contato._id !== _id));
       } catch (error) {
