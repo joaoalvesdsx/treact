@@ -143,7 +143,7 @@ const FollowUp = () => {
       
       <div className="proposta-info">
         <div className='box1'>
-          <p><strong>CNPJ:</strong> {proposta.cnpj_empresa}</p>
+          <p><strong>Numero da proposta:</strong> {proposta.numero}</p>
           <p><strong>Cliente/Empresa:</strong> {empresaNome}</p>
           <p><strong>Data da Proposta:</strong> {proposta.data}</p>
         </div>

@@ -14,6 +14,7 @@ const RegistrarProposta = () => {
   const [observacao, setObservacao] = useState('');
   const [descricao, setDescricao] = useState('');
   const [cnpj_empresa, setCnpjEmpresa] = useState('');
+  const [numero, setNumero] = useState(''); // Novo campo
   const [propostas, setPropostas] = useState([]);
   const [filtroStatus, setFiltroStatus] = useState('Todos');
   const [filtroDataInicio, setFiltroDataInicio] = useState('');
@@ -67,6 +68,7 @@ const RegistrarProposta = () => {
     if (!data) newErrors.data = 'Data é obrigatória';
     if (!descricao) newErrors.descricao = 'Descrição é obrigatória';
     if (!cnpj_empresa) newErrors.cnpj_empresa = 'CNPJ da empresa é obrigatório';
+    if (!numero) newErrors.numero = 'Número é obrigatório'; 
     return newErrors;
   };
 
@@ -83,7 +85,8 @@ const RegistrarProposta = () => {
       observacao,
       descricao,
       status: 'Aberta',
-      cnpj_empresa
+      cnpj_empresa,
+      numero
     };
 
     try {
@@ -97,6 +100,7 @@ const RegistrarProposta = () => {
       setData('');
       setObservacao('');
       setDescricao('');
+      setNumero('');
       setCnpjEmpresa('');
       setErrors({});
     } catch (error) {
@@ -135,6 +139,7 @@ const RegistrarProposta = () => {
   });
 
   const columns = [
+    { header: 'Número', accessor: 'numero' },
     { header: 'Referência', accessor: 'referencia' },
     { header: 'Data', accessor: 'data' },
     { header: 'Cliente', accessor: 'nome_empresa' },
@@ -159,6 +164,14 @@ const RegistrarProposta = () => {
       <div className="registrar-proposta">
         <h2>Propostas</h2>
         <div className="form-row">
+          <Input 
+            classname="input-forms"
+            type="text"
+            placeholder="Número"
+            value={numero}
+            onChange={(e) => setNumero(e.target.value)}
+          />
+          {errors.numero && <span className="error">{errors.numero}</span>}
           <Input 
             classname="input-forms"
             type="text"
