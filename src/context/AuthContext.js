@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -22,10 +23,10 @@ export const AuthProvider = ({ children }) => {
         setAuth({ token: response.data.token, isAuthenticated: true });
         navigate('/menu');
       } else {
-        alert('Nome de usuário ou senha incorretos.');
+        throw new Error('Nome de usuário ou senha incorretos.');
       }
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
+      throw error;
     }
   };
 

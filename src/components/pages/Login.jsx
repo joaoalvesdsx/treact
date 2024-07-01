@@ -9,10 +9,16 @@ import ImageL from '../img/logo.jpeg';
 function Login() {
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const { login } = useAuth();
 
   const handleLogin = async () => {
-    await login(usuario, senha);
+    try {
+      await login(usuario, senha);
+      setErrorMessage(''); // Limpa a mensagem de erro se o login for bem-sucedido
+    } catch (error) {
+      setErrorMessage(error.message); // Define a mensagem de erro se ocorrer uma exceção
+    }
   };
 
   return (
@@ -49,6 +55,7 @@ function Login() {
                 onChange={(e) => setSenha(e.target.value)}
               />
             </div>  
+            {errorMessage && <div className="error-message">{errorMessage}</div>} {/* Exibe a mensagem de erro se houver */}
           </div>
           <Button className="overlap" onClick={handleLogin}>
             <div className="text-wrapper-2">Entrar</div>

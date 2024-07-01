@@ -7,7 +7,7 @@ import { useAuth } from '../../context/AuthContext';
 function Menu() {
   const navigate = useNavigate();
   const { auth } = useAuth();
-
+  const { logout } = useAuth();
   useEffect(() => {
     if (!auth.token) {
       navigate('/');
@@ -16,8 +16,7 @@ function Menu() {
 
   const handleLogout = () => {
     // Limpar o token de autenticação ou chamar uma função de logout no contexto
-    // Por exemplo:
-    auth.logout();
+    logout();
     navigate('/');
   };
 
