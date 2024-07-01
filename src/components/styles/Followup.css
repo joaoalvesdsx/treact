@@ -101,6 +101,7 @@ img {
 
 h2{
     margin-left: 10px;
+    text-align: start;
 }
 
 #file-upload-button{
