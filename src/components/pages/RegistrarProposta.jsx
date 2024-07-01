@@ -132,7 +132,7 @@ const RegistrarProposta = () => {
   });
 
   const columns = [
-    { header: 'Número', accessor: '_id' },
+    { header: 'Referência', accessor: 'referencia' },
     { header: 'Data', accessor: 'data' },
     { header: 'Cliente', accessor: 'cnpj_empresa', Cell: ({ value }) => empresas[value] || value },
     { header: 'Descrição', accessor: 'descricao' },
@@ -142,8 +142,8 @@ const RegistrarProposta = () => {
           value={row.original.status || ''}
           onChange={(e) => handleStatusChange(row.original._id, e.target.value)}
         >
-          <option value="Aberto">Aberto</option>
-          <option value="Fechado">Fechado</option>
+          <option value="Aberta">Aberta</option>
+          <option value="Fechada">Fechada</option>
           <option value="Pendente">Pendente</option>
         </select>
       )
