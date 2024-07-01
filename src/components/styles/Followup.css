@@ -116,6 +116,8 @@ h2{
     padding: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     z-index: 1000;
+    width: 800px;
+    height: 600px;
   }
   
   .Overlay {
