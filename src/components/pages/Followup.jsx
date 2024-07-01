@@ -63,7 +63,7 @@ const FollowUp = () => {
       console.log('Enviando requisição para atualizar status:', newStatus);
       console.log(_id)
       console.log(newStatus)
-      const response = await api.post('/atualizar_status_proposta', { _id, status: newStatus }, {
+      const response = await api.post('/atualizar_status_proposta', { _id :_id, status: newStatus }, {
         headers: { Authorization: `Bearer ${auth.token}` }
       });
       console.log('Resposta da atualização de status:', response);
