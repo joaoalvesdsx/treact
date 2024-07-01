@@ -150,7 +150,7 @@ const FollowUp = () => {
         <div className='image-box'>
           {imagens.map(imagem => (
             <div key={imagem.path} className="imagem">            
-              <img src={`/get_imagem/${imagem.path}`} alt={imagem.descricao} width="250" height="250" />
+              <img src={`https://backend-5eid.onrender.com/get_imagem/${imagem.path}`} alt={imagem.descricao} width="250" height="250" />
               <p>{imagem.descricao}</p>
             </div>
           ))}
