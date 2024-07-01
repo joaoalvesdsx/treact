@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import api from '../../api';
 import Header from '../commons/Header';
@@ -12,6 +12,7 @@ Modal.setAppElement('#root'); // Para acessibilidade
 
 const FollowUp = () => {
   const { auth } = useAuth();
+  const navigate = useNavigate();
   const { _id } = useParams(); 
   const [proposta, setProposta] = useState({});
   const [empresaNome, setEmpresaNome] = useState('');
@@ -127,6 +128,23 @@ const FollowUp = () => {
     }
   };
 
+  const handleDeleteProposta = async () => {
+    try {
+      console.log('Apagando proposta...');
+      const response = await api.delete(`/proposta/${_id}`, {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      });
+      console.log('Resposta ao apagar proposta:', response);
+      if (response.status === 200) {
+        navigate('/'); // Redirecionar após deletar a proposta
+      } else {
+        console.error('Erro ao apagar proposta:', response);
+      }
+    } catch (error) {
+      console.error('Erro ao apagar proposta:', error);
+    }
+  };
+
   const openModal = (image) => {
     setCurrentImage(image);
     setModalIsOpen(true);
@@ -148,7 +166,7 @@ const FollowUp = () => {
           <p><strong>Data da Proposta:</strong> {proposta.data}</p>
         </div>
         <div className='box2'>
-        <p><strong>Status:</strong>
+          <p><strong>Status:</strong>
             <select className="select" value={proposta.status} onChange={(e) => handleUpdateStatus(e.target.value)}>
               <option value="Aberta">Aberta</option>
               <option value="Fechada">Fechada</option>
@@ -157,7 +175,6 @@ const FollowUp = () => {
           </p>
           <p><strong>Descricao:</strong> {proposta.descricao}</p>
           <p><strong>Referência:</strong> {proposta.referencia}</p>
-          
         </div>
       </div>
 
@@ -250,6 +267,7 @@ const FollowUp = () => {
           <Button className='button-add' onClick={handleSaveTratativa}>+</Button>
         </div>
       </div>
+      <Button className='button-delete' onClick={handleDeleteProposta}>Apagar Proposta</Button>
     </div>
   );
 };
