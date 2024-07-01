@@ -1,7 +1,7 @@
 /* MapComponent.css */
 .map-container {
     width: 50%;
-    height: auto;
+    height: 60%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,7 +23,6 @@
   }
   
   .tooltip {
-    position: absolute;
     background-color: rgba(1, 40, 66, 1);
     border: 1px solid #ccc;
     padding: 5px;
