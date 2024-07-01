@@ -55,7 +55,7 @@ function Login() {
                 onChange={(e) => setSenha(e.target.value)}
               />
             </div>  
-            {errorMessage && <div className="error-message">{errorMessage}</div>} {/* Exibe a mensagem de erro se houver */}
+            {errorMessage && <div className="error-message">Usuário ou senha incorretos.</div>} {/* Exibe a mensagem de erro se houver */}
           </div>
           <Button className="overlap" onClick={handleLogin}>
             <div className="text-wrapper-2">Entrar</div>
