@@ -132,15 +132,18 @@ const FollowUp = () => {
     try {
       console.log('Apagando proposta...');
       const response = await api.delete(`/proposta/${_id}`, {
-        headers: { Authorization: `Bearer ${auth.token}` }
+        headers: { Authorization: `Bearer ${auth.token}` },
+        data: {_id}
       });
       console.log('Resposta ao apagar proposta:', response);
       if (response.status === 200) {
         navigate('/'); // Redirecionar após deletar a proposta
       } else {
+        console.log(_id)
         console.error('Erro ao apagar proposta:', response);
       }
     } catch (error) {
+      console.log(_id)
       console.error('Erro ao apagar proposta:', error);
     }
   };
