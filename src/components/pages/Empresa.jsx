@@ -189,7 +189,7 @@ const EmpresaDetails = () => {
     { header: 'Data', accessor: 'data' },
     { header: 'Status', accessor: 'status' },
     { header: 'Descrição', accessor: 'descricao' },
-    { header: 'Último Status', accessor: 'observacao' }
+    { header: 'Observação', accessor: 'observacao' }
   ];
 
   return (
