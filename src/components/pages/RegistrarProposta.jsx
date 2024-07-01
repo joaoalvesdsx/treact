@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import api from '../../api';
 import Header from '../commons/Header';
 import Input from '../commons/Input';
@@ -22,8 +22,6 @@ const RegistrarProposta = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const { auth } = useAuth();
-  
-  
 
   const fetchData = useCallback(async () => {
     try {
@@ -35,6 +33,7 @@ const RegistrarProposta = () => {
       const propostas = responsePropostas.data;
       propostas.reverse();
       setPropostas(propostas);
+
       const empresaCNPJs = [...new Set(propostas.map(proposta => proposta.cnpj_empresa))];
       const empresaResponses = await Promise.all(
         empresaCNPJs.map(cnpj => api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
@@ -53,11 +52,10 @@ const RegistrarProposta = () => {
     }
   }, [auth.token]);
 
-
   useEffect(() => {
     fetchData();
-    },[fetchData]);
-  
+  }, [fetchData]);
+
   const validate = () => {
     const newErrors = {};
     if (!referencia) newErrors.referencia = 'Referência é obrigatória';
