@@ -133,7 +133,6 @@ const FollowUp = () => {
       console.log('Apagando proposta...');
       const response = await api.delete(`/deletar_proposta/${_id}`, {
         headers: { Authorization: `Bearer ${auth.token}` },
-        data: {_id}
       });
       console.log('Resposta ao apagar proposta:', response);
       if (response.status === 200) {
