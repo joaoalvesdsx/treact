@@ -364,7 +364,9 @@ const FollowUp = () => {
           <Button className='button-add' onClick={handleSaveTratativa}>+</Button>
         </div>
       </div>
-      <Button className='botaod' onClick={handleDeleteProposta}>Apagar Proposta</Button>
+          <div className='botao-section'>
+          <Button className='botaod' onClick={handleDeleteProposta}>Apagar Proposta</Button>
+          </div>
     </div>
   );
 };
