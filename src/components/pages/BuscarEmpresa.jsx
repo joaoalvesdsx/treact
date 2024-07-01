@@ -54,7 +54,7 @@ const BuscarEmpresa = () => {
         }
       });
       if (response.data.length > 0) {
-        setEmpresas(response.data);
+        setEmpresas([response.data]);
         setErrorMessage('');
       } else {
         setEmpresas([]);
