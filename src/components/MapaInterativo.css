@@ -27,15 +27,15 @@
     border: 1px solid #ccc;
     padding: 5px;
     border-radius: 5px;
-    top: 350px;
-    left: 900px;
     z-index: 10;
     pointer-events: none;
     color: #FFF;
+    width: 70px;
   }
 
   .mapa{
     width: 100%;
     display: flex;
-    
+    align-items: center;
+
   }
