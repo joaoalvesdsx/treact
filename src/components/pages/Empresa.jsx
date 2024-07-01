@@ -126,20 +126,25 @@ const EmpresaDetails = () => {
 
   const handleDeleteContact = async (_id) => {
     if (window.confirm('Você realmente quer excluir este contato?')) {
-      console.log(_id)
       try {
-        await api.delete(`/deletar_contato`, { data: { _id } },{
+        console.log(_id);
+        const response = await api.delete('/deletar_contato', {
           headers: {
-            Authorization: `Bearer ${auth.token}`
-          }
+            Authorization: `Bearer ${auth.token}`,
+          },
+          data: { _id }, // Passando o _id no corpo da requisição
         });
-        setContatos(contatos.filter(contato => !contato._id === _id));
+        if (response.status === 200) {
+          setContatos(contatos.filter(contato => contato._id !== _id));
+        } else {
+          console.error('Erro ao deletar contato:', response.data);
+        }
       } catch (error) {
         console.error('Erro ao deletar contato:', error);
       }
     }
   };
-
+  
   const handleAddVisita = async () => {
     if (!newVisita.tipo || !newVisita.descricao) {
       alert('Por favor, preencha todos os campos.');
