@@ -115,9 +115,9 @@ const FollowUp = () => {
           <p><strong>Referência:</strong> {proposta.referencia}</p>
           <p><strong>Status:</strong>
             <select value={proposta.status} onChange={(e) => handleUpdateStatus(e.target.value)}>
-              <option value="Aberto">Aberto</option>
-              <option value="Fechado">Fechado</option>
-              <option value="Rejeitado">Rejeitado</option>
+              <option value="Aberta">Aberta</option>
+              <option value="Fechada">Fechada</option>
+              <option value="Rejeitada">Rejeitada</option>
             </select>
           </p>
         </div>
