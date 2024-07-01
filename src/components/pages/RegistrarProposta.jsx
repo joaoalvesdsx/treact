@@ -214,8 +214,8 @@ const RegistrarProposta = () => {
               onChange={(e) => setFiltroStatus(e.target.value)}
             >
               <option className='filtro' value="Todos">Todos</option>
-              <option className='filtro' value="Aberto">Aberto</option>
-              <option className='filtro' value="Fechado">Fechado</option>
+              <option className='filtro' value="Aberta">Aberta</option>
+              <option className='filtro' value="Fechada">Fechada</option>
               <option className='filtro' value="Pendente">Pendente</option>
             </select>
           </div>
