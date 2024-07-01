@@ -283,7 +283,7 @@
   .delete-button {
     background-color: transparent;
     border: none;
-    color: red;
+    color: black;
     font-size: 1.5em;
     cursor: pointer;
   }
