@@ -169,7 +169,7 @@ const EmpresaDetails = () => {
     }
   };
 
-  const handleDeleteEmpresa = async () => {
+  const handleDeleteEmpresa = async (cnpj) => {
     
     if (window.confirm('Você realmente quer excluir esta empresa?')) {
       try {
@@ -226,7 +226,7 @@ const EmpresaDetails = () => {
               <label className='datas'>Última visita: </label>
               <input className='dt' type="date" value={ultimaVisita} onChange={handleUltimaVisitaChange} onBlur={handleUltimaVisitaBlur} />
             </div>
-            <button className="delete-button" onClick={handleDeleteEmpresa}>X</button>
+            <button className="delete-button" onClick={handleDeleteEmpresa(empresa.cnpj)}>X</button>
           </div>
         </div>
 
