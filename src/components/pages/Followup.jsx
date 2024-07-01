@@ -24,6 +24,8 @@ const FollowUp = () => {
   const [newTratativa, setNewTratativa] = useState({ data: '', descricao: '' });
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
+  const [isEditing, setIsEditing] = useState(false); // Novo estado para edição
+  const [observacao, setObservacao] = useState(''); // Estado para observação
 
   useEffect(() => {
     const fetchPropostaData = async () => {
@@ -37,6 +39,7 @@ const FollowUp = () => {
         setImagens(response.data.imagens);
         setRevisoes(response.data.revisoes);
         setTratativas(response.data.tratativas);
+        setObservacao(response.data.observacao); // Definindo a observação
 
         // Buscar o nome da empresa
         const empresaResponse = await api.get(`/listar_empresa_por_cnpj?cnpj=${response.data.cnpj_empresa}`, {
@@ -71,13 +74,11 @@ const FollowUp = () => {
     } catch (error) {
         console.error('Erro ao fazer upload da imagem:', error);
     }
-};
+  };
 
   const handleUpdateStatus = async (newStatus) => {
     try {
       console.log('Enviando requisição para atualizar status:', newStatus);
-      console.log(_id)
-      console.log(newStatus)
       const response = await api.post('/atualizar_proposta', { _id: _id, status: newStatus }, {
         headers: { Authorization: `Bearer ${auth.token}` }
       });
@@ -157,28 +158,122 @@ const FollowUp = () => {
     setCurrentImage(null);
   };
 
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleSaveClick = async () => {
+    try {
+      console.log('Salvando edições...');
+      const response = await api.post('/atualizar_proposta', {
+        _id: _id,
+        numero: proposta.numero,
+        cliente: empresaNome,
+        data: proposta.data,
+        status: proposta.status,
+        descricao: proposta.descricao,
+        referencia: proposta.referencia,
+        observacao: observacao
+      }, {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      });
+      console.log('Resposta ao salvar edições:', response);
+      if (response.status === 200) {
+        setIsEditing(false);
+      } else {
+        console.error('Erro ao salvar edições:', response);
+      }
+    } catch (error) {
+      console.error('Erro ao salvar edições:', error);
+    }
+  };
+
   return (
     <div className="follow-up">
       <Header text="Follow Up" showBackButton={true} />
       
-      <div className="proposta-info">
+      <div className="proposta-info" onClick={handleEditClick}>
         <div className='box1'>
-          <p><strong>Numero da proposta:</strong> {proposta.numero}</p>
-          <p><strong>Cliente/Empresa:</strong> {empresaNome}</p>
-          <p><strong>Data da Proposta:</strong> {proposta.data}</p>
+          <p><strong>Numero da proposta:</strong></p>
+          {isEditing ? (
+            <Input 
+              type="text" 
+              value={proposta.numero} 
+              onChange={(e) => setProposta({ ...proposta, numero: e.target.value })} 
+            />
+          ) : (
+            <p>{proposta.numero}</p>
+          )}
+          <p><strong>Cliente/Empresa:</strong></p>
+          {isEditing ? (
+            <Input 
+              type="text" 
+              value={empresaNome} 
+              onChange={(e) => setEmpresaNome(e.target.value)} 
+            />
+          ) : (
+            <p>{empresaNome}</p>
+          )}
+          <p><strong>Data da Proposta:</strong></p>
+          {isEditing ? (
+            <Input 
+              type="text" 
+              value={proposta.data} 
+              onChange={(e) => setProposta({ ...proposta, data: e.target.value })} 
+            />
+          ) : (
+            <p>{proposta.data}</p>
+          )}
         </div>
         <div className='box2'>
-          <p><strong>Status:</strong>
-            <select className="select" value={proposta.status} onChange={(e) => handleUpdateStatus(e.target.value)}>
+          <p><strong>Status:</strong></p>
+          {isEditing ? (
+            <select className="select" value={proposta.status} onChange={(e) => setProposta({ ...proposta, status: e.target.value })}>
               <option value="Aberta">Aberta</option>
               <option value="Fechada">Fechada</option>
               <option value="Pendente">Pendente</option>
             </select>
-          </p>
-          <p><strong>Descricao:</strong> {proposta.descricao}</p>
-          <p><strong>Referência:</strong> {proposta.referencia}</p>
+          ) : (
+            <p>{proposta.status}</p>
+          )}
+          <p><strong>Descricao:</strong></p>
+          {isEditing ? (
+            <Input 
+              type="text" 
+              value={proposta.descricao} 
+              onChange={(e) => setProposta({ ...proposta, descricao: e.target.value })} 
+            />
+          ) : (
+            <p>{proposta.descricao}</p>
+          )}
+          <p><strong>Referência:</strong></p>
+          {isEditing ? (
+            <Input 
+              type="text" 
+              value={proposta.referencia} 
+              onChange={(e) => setProposta({ ...proposta, referencia: e.target.value })} 
+            />
+          ) : (
+            <p>{proposta.referencia}</p>
+          )}
+        </div>
+        <div className='box3'>
+          <p><strong>Observação:</strong></p>
+          {isEditing ? (
+            <Input 
+              type="text" 
+              value={observacao} 
+              onChange={(e) => setObservacao(e.target.value)} 
+            />
+          ) : (
+            <p>{observacao}</p>
+          )}
         </div>
       </div>
+
+      {isEditing && (
+        <Button className='button-save' onClick={handleSaveClick}>Salvar</Button>
+      )}
 
       <h2>Imagens</h2>
       <div className="imagem-section">
@@ -269,10 +364,7 @@ const FollowUp = () => {
           <Button className='button-add' onClick={handleSaveTratativa}>+</Button>
         </div>
       </div>
-          <div className='botao-section'>
-            <Button className='botaod' onClick={handleDeleteProposta}>Apagar Proposta</Button>
-
-          </div>
+      <Button className='button-delete' onClick={handleDeleteProposta}>Apagar Proposta</Button>
     </div>
   );
 };
