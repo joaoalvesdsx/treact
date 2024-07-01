@@ -276,29 +276,33 @@ const FollowUp = () => {
       )}
 
       <h2>Imagens</h2>
-      <div className="imagem-section">
-        <div className='image-box'>
-          {imagens.map((imagem, index) => (
-            <div key={index} className="imagem" onClick={() => openModal(imagem)}>            
-              <img src={`https://backend-5eid.onrender.com/get_imagem/${imagem.path}`} alt={imagem.descricao} width="250" height="250" />
-            </div>
-          ))}
+      {imagens.length > 0 ? (
+        <div className="imagem-section">
+          <div className='image-box'>
+            {imagens.map((imagem, index) => (
+              <div key={index} className="imagem" onClick={() => openModal(imagem)}>            
+                <img src={`https://backend-5eid.onrender.com/get_imagem/${imagem.path}`} alt={imagem.descricao} width="250" height="250" />
+              </div>
+            ))}
+          </div>
         </div>
-        <div className='input-image'>
-          <Input 
-            className="input-add" 
-            type="text" 
-            placeholder="Descrição da Imagem" 
-            value={newImagem.descricao} 
-            onChange={handleDescricaoChange} 
-          />
-          <Input 
-            className="input-add" 
-            type="file" 
-            onChange={handleImagemChange} 
-          />
-          <Button className='button-add' onClick={handleAddImagem}>+</Button>
-        </div>
+      ) : (
+        <p>Nenhuma imagem adicionada.</p>
+      )}
+      <div className='input-image'>
+        <Input 
+          className="input-add" 
+          type="text" 
+          placeholder="Descrição da Imagem" 
+          value={newImagem.descricao} 
+          onChange={handleDescricaoChange} 
+        />
+        <Input 
+          className="input-add" 
+          type="file" 
+          onChange={handleImagemChange} 
+        />
+        <Button className='button-add' onClick={handleAddImagem}>+</Button>
       </div>
 
       <Modal
