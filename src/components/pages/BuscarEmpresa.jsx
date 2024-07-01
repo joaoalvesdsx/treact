@@ -37,7 +37,7 @@ const BuscarEmpresa = () => {
           Authorization: `Bearer ${auth.token}`
         }
       });
-      setEmpresas(response.data);
+      setEmpresas([response.data]);
     } catch (error) {
       console.error('Erro ao buscar empresas:', error);
     }
