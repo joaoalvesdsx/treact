@@ -287,7 +287,7 @@ const FollowUp = () => {
           </div>
         </div>
       ) : (
-        <p>Nenhuma imagem adicionada.</p>
+        <p style={{alignSelf:'center'}}>Nenhuma imagem adicionada.</p>
       )}
       <div className='input-image'>
         <Input 
