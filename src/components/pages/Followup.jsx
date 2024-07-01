@@ -17,6 +17,7 @@ const FollowUp = () => {
   const [newRevisao, setNewRevisao] = useState({ data: '', revisao: '', descricao: '' });
   const [tratativas, setTratativas] = useState([]);
   const [newTratativa, setNewTratativa] = useState({ data: '', descricao: '' });
+  const [empresaNome, setEmpresaNome] = useState('');
 
   useEffect(() => {
     const fetchPropostaData = async () => {
@@ -26,7 +27,13 @@ const FollowUp = () => {
           headers: { Authorization: `Bearer ${auth.token}` }
         });
         console.log('Dados da proposta recebidos:', response.data);
-        setProposta(response.data);
+        
+        const cnpj = response.data.cnpj_empresa;
+        const empresaResponse = await api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
+          headers: { Authorization: `Bearer ${auth.token}` }
+        });
+        
+        setProposta({ ...response.data, empresaNome: empresaResponse.data.nome_empresa });
         setImagens(response.data.imagens);
         setRevisoes(response.data.revisoes);
         setTratativas(response.data.tratativas);
@@ -61,9 +68,7 @@ const FollowUp = () => {
   const handleUpdateStatus = async (newStatus) => {
     try {
       console.log('Enviando requisição para atualizar status:', newStatus);
-      console.log(_id)
-      console.log(newStatus)
-      const response = await api.post('/atualizar_proposta', { _id :_id, status: newStatus }, {
+      const response = await api.post('/atualizar_proposta', { _id, status: newStatus }, {
         headers: { Authorization: `Bearer ${auth.token}` }
       });
       console.log('Resposta da atualização de status:', response);
@@ -120,7 +125,7 @@ const FollowUp = () => {
       <div className="proposta-info">
         <div className='box1'>
           <p><strong>ID:</strong> {proposta._id}</p>
-          <p><strong>Cliente/Empresa:</strong> {proposta.cnpj_empresa}</p>
+          <p><strong>Cliente/Empresa:</strong> {proposta.empresaNome}</p>
           <p><strong>Data da Proposta:</strong> {proposta.data}</p>
         </div>
         <div className='box2'>
