@@ -148,15 +148,16 @@ const FollowUp = () => {
           <p><strong>Data da Proposta:</strong> {proposta.data}</p>
         </div>
         <div className='box2'>
-          <p><strong>Descricao:</strong> {proposta.descricao}</p>
-          <p><strong>Referência:</strong> {proposta.referencia}</p>
-          <p><strong>Status:</strong>
+        <p><strong>Status:</strong>
             <select className="select" value={proposta.status} onChange={(e) => handleUpdateStatus(e.target.value)}>
               <option value="Aberta">Aberta</option>
               <option value="Fechada">Fechada</option>
               <option value="Pendente">Pendente</option>
             </select>
           </p>
+          <p><strong>Descricao:</strong> {proposta.descricao}</p>
+          <p><strong>Referência:</strong> {proposta.referencia}</p>
+          
         </div>
       </div>
 
