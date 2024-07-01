@@ -87,7 +87,7 @@ const RegistrarProposta = () => {
     };
 
     try {
-      await api.post('/registrar_proposta', novaProposta, {
+      await api.post('/cadastrar_proposta', novaProposta, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
