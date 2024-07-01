@@ -55,13 +55,12 @@ const BuscarEmpresa = () => {
         }
       });
       console.log('Resposta do backend:', response.data); // Log para verificar a resposta do backend
-      if (response.data.length > 0) {
+      if (Array.isArray(response.data)) {
         setEmpresas(response.data);
-        setErrorMessage('');
       } else {
-        setEmpresas([]);
-        setErrorMessage('Nenhuma empresa encontrada com o nome fornecido.');
+        setEmpresas([response.data]);
       }
+      setErrorMessage('');
     } catch (error) {
       console.error('Erro ao buscar empresas:', error);
       setErrorMessage('Erro ao buscar empresas.');
