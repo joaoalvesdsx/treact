@@ -172,6 +172,7 @@ const EmpresaDetails = () => {
           },
           data: { cnpj }
         });
+        setPropostas(propostas.filter(proposta => proposta.cnpj_empresa !== cnpj));
         navigate('/listar-empresas');
       } catch (error) {
         console.error('Erro ao deletar empresa:', error);
