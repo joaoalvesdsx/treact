@@ -136,7 +136,7 @@ const FollowUp = () => {
       });
       console.log('Resposta ao apagar proposta:', response);
       if (response.status === 200) {
-        navigate('/'); // Redirecionar após deletar a proposta
+        navigate('/menu'); // Redirecionar após deletar a proposta
       } else {
         console.log(_id)
         console.error('Erro ao apagar proposta:', response);
