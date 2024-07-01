@@ -11,13 +11,13 @@ const FollowUp = () => {
   const { auth } = useAuth();
   const { _id } = useParams(); 
   const [proposta, setProposta] = useState({});
+  const [empresaNome, setEmpresaNome] = useState('');
   const [imagens, setImagens] = useState([]);
   const [newImagem, setNewImagem] = useState({ descricao: '', file: null });
   const [revisoes, setRevisoes] = useState([]);
   const [newRevisao, setNewRevisao] = useState({ data: '', revisao: '', descricao: '' });
   const [tratativas, setTratativas] = useState([]);
   const [newTratativa, setNewTratativa] = useState({ data: '', descricao: '' });
-  const [empresaNome, setEmpresaNome] = useState('');
 
   useEffect(() => {
     const fetchPropostaData = async () => {
@@ -27,16 +27,17 @@ const FollowUp = () => {
           headers: { Authorization: `Bearer ${auth.token}` }
         });
         console.log('Dados da proposta recebidos:', response.data);
-        
-        const cnpj = response.data.cnpj_empresa;
-        const empresaResponse = await api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
-          headers: { Authorization: `Bearer ${auth.token}` }
-        });
-        
-        setProposta({ ...response.data, empresaNome: empresaResponse.data.nome_empresa });
+        setProposta(response.data);
         setImagens(response.data.imagens);
         setRevisoes(response.data.revisoes);
         setTratativas(response.data.tratativas);
+
+        // Buscar o nome da empresa
+        const empresaResponse = await api.get(`/listar_empresa_por_cnpj?cnpj=${response.data.cnpj_empresa}`, {
+          headers: { Authorization: `Bearer ${auth.token}` }
+        });
+        setEmpresaNome(empresaResponse.data.nome_empresa);
+
       } catch (error) {
         console.error('Erro ao buscar dados da proposta:', error);
       }
@@ -52,12 +53,13 @@ const FollowUp = () => {
 
     try {
       console.log('Enviando imagem...');
-      await api.post(`/upload_imagem/${_id}`, formData, {
+      const response = await api.post(`/upload_imagem/${_id}`, formData, {
         headers: {
           Authorization: `Bearer ${auth.token}`,
           'Content-Type': 'multipart/form-data'
         }
       });
+      console.log('Resposta do upload da imagem:', response);
       setImagens([...imagens, { descricao: newImagem.descricao, path: newImagem.file.name }]);
       setNewImagem({ descricao: '', file: null });
     } catch (error) {
@@ -68,7 +70,9 @@ const FollowUp = () => {
   const handleUpdateStatus = async (newStatus) => {
     try {
       console.log('Enviando requisição para atualizar status:', newStatus);
-      const response = await api.post('/atualizar_proposta', { _id, status: newStatus }, {
+      console.log(_id)
+      console.log(newStatus)
+      const response = await api.post('/atualizar_proposta', { _id: _id, status: newStatus }, {
         headers: { Authorization: `Bearer ${auth.token}` }
       });
       console.log('Resposta da atualização de status:', response);
@@ -125,7 +129,7 @@ const FollowUp = () => {
       <div className="proposta-info">
         <div className='box1'>
           <p><strong>ID:</strong> {proposta._id}</p>
-          <p><strong>Cliente/Empresa:</strong> {proposta.empresaNome}</p>
+          <p><strong>Cliente/Empresa:</strong> {empresaNome}</p>
           <p><strong>Data da Proposta:</strong> {proposta.data}</p>
         </div>
         <div className='box2'>
