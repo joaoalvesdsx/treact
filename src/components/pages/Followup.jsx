@@ -196,7 +196,7 @@ const FollowUp = () => {
       >
         {currentImage && (
           <>
-            <img src={`https://backend-5eid.onrender.com/get_imagem/${currentImage.path}`} alt={currentImage.descricao} style={{ width: '100%' }} />
+            <img src={`https://backend-5eid.onrender.com/get_imagem/${currentImage.path}`} alt={currentImage.descricao} style={{ width: '80%', height:'80%' }} />
             <p>{currentImage.descricao}</p>
             <Button  onClick={closeModal}>Fechar</Button>
           </>
