@@ -52,20 +52,20 @@ const FollowUp = () => {
     formData.append('descricao', newImagem.descricao);
 
     try {
-      console.log('Enviando imagem...');
-      const response = await api.post(`/upload_imagem/${_id}`, formData, {
-        headers: {
-          Authorization: `Bearer ${auth.token}`,
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      console.log('Resposta do upload da imagem:', response);
-      setImagens([...imagens, { descricao: newImagem.descricao, path: newImagem.file.name }]);
-      setNewImagem({ descricao: '', file: null });
+        console.log('Enviando imagem...');
+        const response = await api.post(`/upload_imagem/${_id}`, formData, {
+            headers: {
+                Authorization: `Bearer ${auth.token}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log('Resposta do upload da imagem:', response);
+        setImagens([...imagens, { descricao: newImagem.descricao, path: newImagem.file.name }]);
+        setNewImagem({ descricao: '', file: null });
     } catch (error) {
-      console.error('Erro ao fazer upload da imagem:', error);
+        console.error('Erro ao fazer upload da imagem:', error);
     }
-  };
+};
 
   const handleUpdateStatus = async (newStatus) => {
     try {
