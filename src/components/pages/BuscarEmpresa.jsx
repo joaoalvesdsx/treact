@@ -14,45 +14,79 @@ const BuscarEmpresa = () => {
   const [nome_empresa, setNome] = useState('');
   const [cidade, setCidade] = useState('');
   const [empresas, setEmpresas] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const { auth } = useAuth();
 
   const handleBuscarCnpj = async () => {
+    if (!cnpj) {
+      setErrorMessage('Por favor, insira um CNPJ para buscar.');
+      return;
+    }
     try {
       const response = await api.get(`/listar_empresa_por_cnpj?cnpj=${cnpj}`, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
       });
-      setEmpresas([response.data]);
+      if (response.data) {
+        setEmpresas([response.data]);
+        setErrorMessage('');
+      } else {
+        setEmpresas([]);
+        setErrorMessage('Nenhuma empresa encontrada com o CNPJ fornecido.');
+      }
     } catch (error) {
       console.error('Erro ao buscar empresa:', error);
+      setErrorMessage('Erro ao buscar empresa.');
     }
   };
 
   const handleBuscarNome = async () => {
+    if (!nome_empresa) {
+      setErrorMessage('Por favor, insira um nome para buscar.');
+      return;
+    }
     try {
       const response = await api.get(`/listar_empresas_por_nome?nome=${nome_empresa}`, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
       });
-      setEmpresas([response.data]);
+      if (response.data.length > 0) {
+        setEmpresas(response.data);
+        setErrorMessage('');
+      } else {
+        setEmpresas([]);
+        setErrorMessage('Nenhuma empresa encontrada com o nome fornecido.');
+      }
     } catch (error) {
       console.error('Erro ao buscar empresas:', error);
+      setErrorMessage('Erro ao buscar empresas.');
     }
   };
 
   const handleBuscarCidade = async () => {
+    if (!cidade) {
+      setErrorMessage('Por favor, insira uma cidade para buscar.');
+      return;
+    }
     try {
       const response = await api.get(`/listar_empresas_por_cidade?cidade=${cidade}`, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
       });
-      setEmpresas(response.data);
+      if (response.data.length > 0) {
+        setEmpresas(response.data);
+        setErrorMessage('');
+      } else {
+        setEmpresas([]);
+        setErrorMessage('Nenhuma empresa encontrada na cidade fornecida.');
+      }
     } catch (error) {
       console.error('Erro ao buscar empresas:', error);
+      setErrorMessage('Erro ao buscar empresas.');
     }
   };
 
@@ -64,9 +98,16 @@ const BuscarEmpresa = () => {
         }
       });
       console.log('Dados recebidos (Região):', response.data);
-      setEmpresas(response.data);
+      if (response.data.length > 0) {
+        setEmpresas(response.data);
+        setErrorMessage('');
+      } else {
+        setEmpresas([]);
+        setErrorMessage('Nenhuma empresa encontrada na região fornecida.');
+      }
     } catch (error) {
       console.error('Erro ao buscar empresas:', error);
+      setErrorMessage('Erro ao buscar empresas.');
     }
   };
 
@@ -122,6 +163,7 @@ const BuscarEmpresa = () => {
         </div>
       </div>
       <div className="resultados">
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
         {empresas.length > 0 && <Table columns={columns} data={empresas} onRowClick={handleRowClick} />}
       </div>
     </>
