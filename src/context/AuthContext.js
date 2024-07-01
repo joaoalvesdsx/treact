@@ -23,10 +23,11 @@ export const AuthProvider = ({ children }) => {
         setAuth({ token: response.data.token, isAuthenticated: true });
         navigate('/menu');
       } else {
-        throw new Error('Nome de usuário ou senha incorretos.');
+        alert('Nome de usuário ou senha incorretos.');
       }
     } catch (error) {
-      throw error;
+      console.error('Erro ao fazer login:', error);
+      alert('Erro ao fazer login.');
     }
   };
 
