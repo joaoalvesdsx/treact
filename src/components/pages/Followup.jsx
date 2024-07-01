@@ -272,7 +272,7 @@ const FollowUp = () => {
       </div>
 
       {isEditing && (
-        <Button className='button-save' onClick={handleSaveClick}>Salvar</Button>
+        <Button className='botaod' onClick={handleSaveClick}>Salvar</Button>
       )}
 
       <h2>Imagens</h2>
@@ -364,7 +364,7 @@ const FollowUp = () => {
           <Button className='button-add' onClick={handleSaveTratativa}>+</Button>
         </div>
       </div>
-      <Button className='button-delete' onClick={handleDeleteProposta}>Apagar Proposta</Button>
+      <Button className='botaod' onClick={handleDeleteProposta}>Apagar Proposta</Button>
     </div>
   );
 };
