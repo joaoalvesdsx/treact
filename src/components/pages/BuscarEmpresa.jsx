@@ -47,15 +47,16 @@ const BuscarEmpresa = () => {
       setErrorMessage('Por favor, insira um nome para buscar.');
       return;
     }
-    console.log(nome_empresa)
+    console.log('Nome a ser buscado:', nome_empresa); // Log para verificar o valor do nome_empresa
     try {
       const response = await api.get(`/listar_empresas_por_nome?nome=${nome_empresa}`, {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
       });
+      console.log('Resposta do backend:', response.data); // Log para verificar a resposta do backend
       if (response.data.length > 0) {
-        setEmpresas([response.data]);
+        setEmpresas(response.data);
         setErrorMessage('');
       } else {
         setEmpresas([]);
