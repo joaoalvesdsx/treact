@@ -166,7 +166,6 @@ const FollowUp = () => {
           {imagens.map((imagem, index) => (
             <div key={index} className="imagem" onClick={() => openModal(imagem)}>            
               <img src={`https://backend-5eid.onrender.com/get_imagem/${imagem.path}`} alt={imagem.descricao} width="250" height="250" />
-              <p>{imagem.descricao}</p>
             </div>
           ))}
         </div>
