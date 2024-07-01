@@ -73,6 +73,17 @@ img {
     margin: 20px;
     flex-direction: column;
 }
+.revisao{
+    background-color: rgba(163, 163, 163, 0.34);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.tratativa{
+    background-color: rgba(163, 163, 163, 0.34);
+    border-radius: 5px;
+    padding: 10px;
+}
 
 .tratativa-section{
     display: flex;
