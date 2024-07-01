@@ -170,7 +170,7 @@ const EmpresaDetails = () => {
   };
 
   const handleDeleteEmpresa = async () => {
-    if (window.confirm('Você realmente quer excluir esta empresa?',cnpj)) {
+    if (window.confirm('Você realmente quer excluir esta empresa?')) {
       try {
         await api.delete(`/deletar_empresa`, { data: { cnpj } }, {
           headers: {
@@ -213,8 +213,6 @@ const EmpresaDetails = () => {
           </div>
 
           <div className='dados-att'>
-
-            <button className="delete-button" onClick={handleDeleteEmpresa}>X</button>
             <button className={`status-button ${status.toLowerCase()}`} onClick={handleStatusToggle}>
               {status}
             </button>
@@ -226,7 +224,7 @@ const EmpresaDetails = () => {
               <label className='datas'>Última visita: </label>
               <input className='dt' type="date" value={ultimaVisita} onChange={handleUltimaVisitaChange} onBlur={handleUltimaVisitaBlur} />
             </div>
-            
+            <Button className="delete-button" onClick={handleDeleteEmpresa}>Excluir empresa</Button>
           </div>
         </div>
 
