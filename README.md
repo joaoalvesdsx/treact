@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+Sistema de Gerenciamento de Vendas e Propostas de Projetos de Engenharia Mecânica
+Este projeto é um sistema completo de gerenciamento de vendas e propostas para projetos de engenharia mecânica. Ele foi desenvolvido com um frontend em React, um backend em Flask, e utiliza MongoDB com Mongoose como ORM para armazenar e gerenciar os dados.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Funcionalidades
+1. Gerenciamento de Vendas
+Cadastro de Vendas:
 
-## Available Scripts
+Permite o cadastro de vendas de projetos, incluindo informações como nome do cliente, descrição do projeto, valor da venda, e status (em andamento, concluído, cancelado).
+Consulta de Vendas:
 
-In the project directory, you can run:
+Listagem de todas as vendas cadastradas, com filtros por status, cliente ou data.
+Exibição detalhada das informações de uma venda específica ao selecionar a venda na lista.
+Atualização de Vendas:
 
-### `npm start`
+Permite a edição das informações de uma venda, como atualização do status ou alteração do valor.
+Remoção de Vendas:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Permite a exclusão de uma venda específica após confirmação do usuário.
+2. Gerenciamento de Propostas
+Criação de Propostas:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Permite a criação de propostas de projetos com detalhes como descrição técnica, estimativa de custos, prazos e condições comerciais.
+Consulta de Propostas:
 
-### `npm test`
+Listagem de todas as propostas criadas, com filtros por status (aceito, pendente, rejeitado) ou cliente.
+Detalhamento de uma proposta específica com informações completas.
+Atualização de Propostas:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Permite a modificação dos detalhes de uma proposta, incluindo revisões técnicas e ajustes de custos.
+Remoção de Propostas:
 
-### `npm run build`
+Permite a exclusão de uma proposta específica com confirmação.
+3. Integração Frontend e Backend
+Interface de Usuário em React:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Interface interativa e responsiva para gerenciar vendas e propostas.
+Componentes reutilizáveis para visualização e manipulação dos dados.
+API RESTful em Flask:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+O backend em Flask fornece uma API RESTful para manipulação de dados, com endpoints para operações de CRUD (Create, Read, Update, Delete) tanto para vendas quanto para propostas.
+Banco de Dados MongoDB com Mongoose:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Armazena os dados de vendas e propostas, utilizando o Mongoose como ORM para modelagem dos dados e interação com o MongoDB.
+Tecnologias Utilizadas
+Frontend:
 
-### `npm run eject`
+React
+Axios para chamadas HTTP ao backend
+React Router para navegação entre páginas
+Backend:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Flask com Python
+Flask-CORS para lidar com políticas de CORS
+Flask-PyMongo para integração com MongoDB
+Banco de Dados:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+MongoDB para armazenamento de dados
+Mongoose para modelagem de dados e integração com MongoDB
+Configuração do Ambiente
+Pré-requisitos
+Node.js (para o frontend)
+Python 3.x (para o backend)
+MongoDB (local ou em um cluster na nuvem)
+Executando o Projeto
+Backend (Flask)
+Clone o repositório:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+bash
+Copiar código
+git clone https://github.com/seu-usuario/gerenciamento-vendas-propostas.git
+Navegue até o diretório do backend:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+bash
+Copiar código
+cd gerenciamento-vendas-propostas/backend
+Crie e ative um ambiente virtual:
 
-## Learn More
+bash
+Copiar código
+python -m venv venv
+source venv/bin/activate  # Para Linux/MacOS
+venv\Scripts\activate  # Para Windows
+Instale as dependências:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+bash
+Copiar código
+pip install -r requirements.txt
+Configure as variáveis de ambiente:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Crie um arquivo .env com as configurações necessárias (ex.: URI do MongoDB).
+Inicie o servidor Flask:
 
-### Code Splitting
+bash
+Copiar código
+flask run
+Frontend (React)
+Navegue até o diretório do frontend:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+bash
+Copiar código
+cd gerenciamento-vendas-propostas/frontend
+Instale as dependências:
 
-### Analyzing the Bundle Size
+bash
+Copiar código
+npm install
+Inicie o servidor de desenvolvimento:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+bash
+Copiar código
+npm start
+Acesse o sistema:
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+O frontend estará disponível em http://localhost:3000.
+Estrutura do Projeto
+/backend: Contém todo o código do servidor Flask, incluindo rotas, modelos de dados e lógica de negócio.
+/frontend: Contém o código React, incluindo componentes, páginas e estilos.
+/backend/models: Modelos de dados definidos com Mongoose.
+/frontend/src: Código fonte do React, organizado em componentes e páginas.
+Contribuições
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests com melhorias ou correções.
